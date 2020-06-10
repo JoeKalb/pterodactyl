@@ -5,13 +5,13 @@ const opts = {
     password:config().TWITCH_PASSWORD,
     username:config().TWITCH_USERNAME,
     channels:[
-        'mopgarden'
+        'thabuttress'
     ]
 }
 const client = new Client(opts)
 
 let handleMessage = (details: {}) => {
-    console.log(details)
+    //console.log(details)
 }
 
 client.on('chatMessage', handleMessage)
