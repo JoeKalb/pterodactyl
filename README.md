@@ -14,7 +14,7 @@ An in-depth paragraph about your project and overview of use.
 
 ### Basic Example
 
-```
+```typescript
 import { Client } from "../mod.ts";
 
 const opts = {
