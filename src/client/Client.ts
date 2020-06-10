@@ -66,19 +66,33 @@ export class Client extends Emitter{
   }
 
   private async handleMessage(message: string){
-    if(message.match('PING')){
-      await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
-    }
-    else if(message.match('JOIN')){
-      console.log('join')
-      console.log(message)
-    }
-    else if(message.match('PRIVMSG')){
-      
-      this.emit('chatMessage', message)
-    }
-    else{
-      console.log(message)
+    const messageType = _.messageType(message)
+    console.log(messageType)
+    //console.log(message)
+
+    switch(messageType){
+      case '001':
+        break
+      case '353':
+        break
+      case 'CAP':
+        break
+      case 'JOIN':
+        break
+      case 'HOSTTARGET':
+        break
+      case 'PART':
+      case 'PING':
+        await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
+        break
+      case 'PRIVMSG':
+        this.emit('chatMessage', message)
+        break
+      case 'WHISPER':
+        break
+
+      default:
+        console.log(`Type Not Accounted For: ${messageType}\n Message: ${message}`)
     }
   }
 
