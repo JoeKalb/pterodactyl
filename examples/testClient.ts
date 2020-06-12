@@ -5,15 +5,17 @@ const opts = {
     password:config().TWITCH_PASSWORD,
     username:config().TWITCH_USERNAME,
     channels:[
-        'thabuttress'
+        'moonmoon'
     ]
 }
 const client = new Client(opts)
 
-let handleMessage = (details: {}) => {
-    //console.log(details)
+let handleMessage = (message: {[index:string]:any}) => {
+    if(message.text === '!ping')
+        client.chat(message.channel, "pong")
 }
 
 client.on('chatMessage', handleMessage)
+//client.on('resub', (info: {[index:string]:any}) => { console.log(info) })
 
 await client.connect()

@@ -12,7 +12,7 @@ An in-depth paragraph about your project and overview of use.
 
 * Must use [Deno v1.0.3](https://github.com/denoland/deno/releases/tag/v1.0.3) or higher.
 
-### Basic Example
+### Basic Ping Pong Example
 
 ```typescript
 import { Client } from "../mod.ts";
@@ -26,8 +26,9 @@ const opts = {
 }
 const client = new Client(opts)
 
-let handleMessage = (details: {}) => {
-    console.log(details)
+let handleMessage = (message: {[index:string]:any}) => {
+    if(message.text === '!ping')
+        client.chat(message.channel, "pong")
 }
 
 client.on('chatMessage', handleMessage)

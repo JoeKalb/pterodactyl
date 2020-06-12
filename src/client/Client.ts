@@ -4,7 +4,9 @@ import {
   WebSocket
 } from "https://deno.land/std/ws/mod.ts";
 import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
-import _ from "../util/utils.ts";
+import _ from "./utils.ts";
+import commands from "./commands.ts";
+import events from "./events.ts";
 
 export class Client extends Emitter{
   public socket!: WebSocket;
@@ -40,7 +42,7 @@ export class Client extends Emitter{
       const message = async (): Promise<void> => {
         for await (const msg of this.socket){
           if(typeof msg === "string"){
-            this.handleMessage(msg)
+            this.handleEvents(msg)
           }else if(isWebSocketCloseEvent(msg)){
             console.log("Connection Closed.")
             console.log(msg)
@@ -65,9 +67,9 @@ export class Client extends Emitter{
       await this.socket.close(1000).catch(console.error)
   }
 
-  private async handleMessage(message: string){
+  private async handleEvents(message: string){
     const messageType = _.messageType(message)
-    console.log(messageType)
+    //console.log(messageType)
     //console.log(message)
 
     switch(messageType){
@@ -75,20 +77,37 @@ export class Client extends Emitter{
         break
       case '353':
         break
+      case '421':
+        break
       case 'CAP':
+        break
+      case 'CLEARCHAT':
+        break
+      case 'CLEARMSG':
         break
       case 'JOIN':
         break
       case 'HOSTTARGET':
         break
+      case 'NOTICE':
+        break
       case 'PART':
+        break
       case 'PING':
         await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
         break
       case 'PRIVMSG':
-        this.emit('chatMessage', message)
+        this.emit('chatMessage', events.chatMessage(message))
+        break
+      case 'USERNOTICE':
+        let usernotice:{[index:string]:any} = events.usernotice(message)
+        console.log(usernotice)
+        this.emit(usernotice['msg-id'], usernotice)
+        break
+      case 'USERSTATE':
         break
       case 'WHISPER':
+        this.emit('whisper', events.whisper(message))
         break
 
       default:
@@ -98,13 +117,13 @@ export class Client extends Emitter{
 
   public async join(channel: string){
     let index = this.channels.indexOf(channel)
-    channel = _.formatChannel(channel)
+    channel = _.channel(channel)
     this.channels.splice(index, 1, channel)
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
 
   public async part(channel: string){
-    channel = _.formatChannel(channel)
+    channel = _.channel(channel)
 
     if(this.channels.includes(channel)){
       await this.socket.send(`PART ${channel}`).catch(console.error)
@@ -112,5 +131,9 @@ export class Client extends Emitter{
     }
     else
       console.error(`Error: ${channel} has not been joined - cannot part`)
+  }
+
+  public async chat(channel:string, message:string){
+    await this.socket.send(commands.chat(channel, message)).catch(console.error)
   }
 }
