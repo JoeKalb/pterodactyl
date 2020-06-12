@@ -91,13 +91,19 @@ export class Client extends Emitter{
         break
       case 'NOTICE':
         break
+      case 'ROOMSTATE':
+        break
       case 'PART':
         break
       case 'PING':
         await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
         break
       case 'PRIVMSG':
-        this.emit('chatMessage', events.chatMessage(message))
+        let newMessage = events.chatMessage(message)
+        if(newMessage.hasOwnProperty('bits'))
+          this.emit('cheerMessage', newMessage)
+        else
+          this.emit('chatMessage', newMessage)
         break
       case 'USERNOTICE':
         let usernotice:{[index:string]:any} = events.usernotice(message)

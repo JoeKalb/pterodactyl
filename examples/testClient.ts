@@ -5,7 +5,7 @@ const opts = {
     password:config().TWITCH_PASSWORD,
     username:config().TWITCH_USERNAME,
     channels:[
-        'moonmoon'
+        'thethingssheplays'
     ]
 }
 const client = new Client(opts)

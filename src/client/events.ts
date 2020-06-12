@@ -15,7 +15,20 @@ const events = {
         message['text'] = tempArrayMessage[2].trim()
 
         return message
-    }, 
+    },
+
+    roomstate:(rawMessage:string):{} => {
+        let roomstate:{[index:string]:any} = {}
+
+        let tempArrayRoomstate = rawMessage.split(' :')
+
+        roomstate = { ..._.roomstateDetails(tempArrayRoomstate[0]) }
+
+        roomstate['channel'] = tempArrayRoomstate[1]
+            .substring(tempArrayRoomstate[1].indexOf('#'))
+
+        return roomstate
+    },
 
     usernotice:(rawMessage:string):{} => {
         let usernotice:{[index:string]:any} = {}

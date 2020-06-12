@@ -24,6 +24,21 @@ const _ =  {
         return result.substring(0, result.length - 1)
     },
 
+    roomstateDetails(info:string):{}{
+        let roomstate:{[index:string]:any} = {}
+
+        info.substring(1).split(';').forEach(e => {
+            let [key, value]:any = e.split("=")
+
+            if(isNumberType(key))
+                value = Number(value)
+            else if(value === "0" || value === "1")
+                value = (value === "1") ? true:false
+        })
+
+        return roomstate
+    },
+
     userinfo(info:string):{}{
         let userinfo:{[index:string]:any} = {}
 
@@ -34,7 +49,7 @@ const _ =  {
                 value = Number(value)
             else if(value === "0" || value === "1")
                 value = (value === "1") ? true:false
-            else if(key === 'system-msg')
+            else if(key === 'system-msg' || key === 'msg-param-sub-plan-name')
                 value = value.replace(/\\s/g, " ")
             else if (key === 'msg-param-origin-id')
                 value = value.replace(/\\s/g, "-")
