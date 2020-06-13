@@ -70,6 +70,7 @@ let isNumberType = (key:string):boolean => {
         || (key === 'bits')
         || (key === 'slow')
         || (key === 'followers-only')
+        || (key === 'message-id')
 }
 
 export default _

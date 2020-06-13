@@ -15,6 +15,7 @@ export class Client extends Emitter{
   private password: string = ""
   private username: string = ""
   private interval: number = 0
+  private connected: boolean = false
 
   public constructor(opts:{
     password:string,
@@ -22,10 +23,13 @@ export class Client extends Emitter{
     channels:string[]}){
     super();
     this.password = opts.password
-    this.username = opts.username
+    this.username = opts.username.toLowerCase()
     this.channels = opts.channels
   }
   
+  /* 
+    Public methods available to the client
+  */
   public async connect(): Promise<void> {
     try{
       this.socket = await connectWebSocket("wss://irc-ws.chat.twitch.tv:443")
@@ -42,7 +46,7 @@ export class Client extends Emitter{
       const message = async (): Promise<void> => {
         for await (const msg of this.socket){
           if(typeof msg === "string"){
-            this.handleEvents(msg)
+            msg.trim().split('\n').forEach(e => { this.handleEvents(e) })
           }else if(isWebSocketCloseEvent(msg)){
             console.log("Connection Closed.")
             console.log(msg)
@@ -63,10 +67,35 @@ export class Client extends Emitter{
   }
 
   public async disconnect(): Promise<void> {
-    if(!this.socket.isClosed)
+    if(!this.socket.isClosed){
+      this.connected = false
       await this.socket.close(1000).catch(console.error)
+    }
   }
 
+  public async join(channel: string){
+    let index = this.channels.indexOf(channel)
+    channel = _.channel(channel)
+    this.channels.splice(index, 1, channel)
+    await this.socket.send(`JOIN ${channel}`).catch(console.error)
+  }
+
+  public async part(channel: string){
+    channel = _.channel(channel)
+
+    if(this.channels.includes(channel)){
+      await this.socket.send(`PART ${channel}`).catch(console.error)
+      this.channels.splice(this.channels.indexOf(channel), 1)
+    }
+    else
+      throw console.error(`Error: ${channel} has not been joined - cannot part`)
+  }
+
+  public async chat(channel:string, message:string){
+    await this.socket.send(commands.chat(channel, message)).catch(console.error)
+  }
+
+  // Handles all incoming messages to determine what event to emit.
   private async handleEvents(message: string){
     const messageType = _.messageType(message)
     //console.log(messageType)
@@ -74,8 +103,25 @@ export class Client extends Emitter{
 
     switch(messageType){
       case '001':
+        // Client is connected to Twitch WebSocket Client
+        this.connected = true
+        break
+      case '002':
+        break
+      case '003':
+        break
+      case '004':
         break
       case '353':
+        this.confirmChannelJoin(message)
+        break
+      case '366':
+        break
+      case '372':
+        break
+      case '375':
+        break
+      case '376':
         break
       case '421':
         break
@@ -86,6 +132,7 @@ export class Client extends Emitter{
       case 'CLEARMSG':
         break
       case 'JOIN':
+        //console.log(message)
         break
       case 'HOSTTARGET':
         break
@@ -107,7 +154,6 @@ export class Client extends Emitter{
         break
       case 'USERNOTICE':
         let usernotice:{[index:string]:any} = events.usernotice(message)
-        console.log(usernotice)
         this.emit(usernotice['msg-id'], usernotice)
         break
       case 'USERSTATE':
@@ -121,25 +167,11 @@ export class Client extends Emitter{
     }
   }
 
-  public async join(channel: string){
-    let index = this.channels.indexOf(channel)
-    channel = _.channel(channel)
-    this.channels.splice(index, 1, channel)
-    await this.socket.send(`JOIN ${channel}`).catch(console.error)
-  }
+  private confirmChannelJoin(message:string):void{
+    let [channel, username]:string[] = message
+      .substring(message.indexOf('#')).trim().split(' ', 1)
 
-  public async part(channel: string){
-    channel = _.channel(channel)
-
-    if(this.channels.includes(channel)){
-      await this.socket.send(`PART ${channel}`).catch(console.error)
-      this.channels.splice(this.channels.indexOf(channel), 1)
-    }
-    else
-      console.error(`Error: ${channel} has not been joined - cannot part`)
-  }
-
-  public async chat(channel:string, message:string){
-    await this.socket.send(commands.chat(channel, message)).catch(console.error)
+    if(username === this.username && !this.channels.includes(channel))
+      this.channels = [...this.channels, channel]
   }
 }
