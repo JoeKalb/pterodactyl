@@ -17,10 +17,8 @@ let handleMessage = (message: {[index:string]:any}) => {
     else if(message.text === '!join' && message.channel === '#botfish5'){
         client.join(message.username)
     }
-    else if(message.text === '!part'){
+    else if(message.username === 'joefish5')
         console.log(message)
-        client.part(message.channel)
-    }
 }
 
 let handleWhisper = (message: {[index:string]:any}) => {

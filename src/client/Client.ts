@@ -66,21 +66,29 @@ export class Client extends Emitter{
     }
   }
 
-  public async disconnect(): Promise<void> {
+  public async disconnect(): Promise<void>{
     if(!this.socket.isClosed){
       this.connected = false
       await this.socket.close(1000).catch(console.error)
     }
   }
 
-  public async join(channel: string){
+  public async raw(message: string): Promise<void>{
+    if(this.connected)
+      await this.socket.send(message).catch(console.error)
+  }
+
+  public async join(channel: string): Promise<void>{
     let index = this.channels.indexOf(channel)
     channel = _.channel(channel)
     this.channels.splice(index, 1, channel)
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
 
-  public async part(channel: string){
+  public async part(channel: string): Promise<void>{
+    if(!this.connected)
+      return
+
     channel = _.channel(channel)
 
     if(this.channels.includes(channel)){
@@ -92,14 +100,17 @@ export class Client extends Emitter{
   }
 
   public async chat(channel:string, message:string){
+    if(!this.connected)
+      return
+    
     await this.socket.send(commands.chat(channel, message)).catch(console.error)
   }
 
   // Handles all incoming messages to determine what event to emit.
-  private async handleEvents(message: string){
-    const messageType = _.messageType(message)
+  private async handleEvents(rawMessage: string): Promise<void>{
+    const messageType = _.messageType(rawMessage)
     //console.log(messageType)
-    //console.log(message)
+    console.log(rawMessage)
 
     switch(messageType){
       case '001':
@@ -113,7 +124,7 @@ export class Client extends Emitter{
       case '004':
         break
       case '353':
-        this.confirmChannelJoin(message)
+        this.confirmChannelJoin(rawMessage)
         break
       case '366':
         break
@@ -146,24 +157,24 @@ export class Client extends Emitter{
         await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
         break
       case 'PRIVMSG':
-        let newMessage = events.chatMessage(message)
+        let newMessage = events.chatMessage(rawMessage)
         if(newMessage.hasOwnProperty('bits'))
           this.emit('cheerMessage', newMessage)
         else
           this.emit('chatMessage', newMessage)
         break
       case 'USERNOTICE':
-        let usernotice:{[index:string]:any} = events.usernotice(message)
+        let usernotice:{[index:string]:any} = events.usernotice(rawMessage)
         this.emit(usernotice['msg-id'], usernotice)
         break
       case 'USERSTATE':
         break
       case 'WHISPER':
-        this.emit('whisper', events.whisper(message))
+        this.emit('whisper', events.whisper(rawMessage))
         break
 
       default:
-        console.log(`Type Not Accounted For: ${messageType}\n Message: ${message}`)
+        console.log(`Type Not Accounted For: ${messageType}\n Message: ${rawMessage}`)
     }
   }
 

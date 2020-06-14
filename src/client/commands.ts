@@ -7,9 +7,14 @@ import _ from "./utils.ts";
     https://dev.twitch.tv/docs/irc/guide
 */
 const commands = {
-    chat: (channel:string, message:string) =>{
+    chat: (channel:string, message:string):string => {
         channel = _.channel(channel)
         return `PRIVMSG ${channel} :${message}`
+    },
+
+    whisper: (username:string, message:string):string => {
+        username = username.trim().toLowerCase()
+        return `PRIVMSG \w ${username} ${message}`
     }
 }
 
