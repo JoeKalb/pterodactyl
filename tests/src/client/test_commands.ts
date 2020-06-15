@@ -11,5 +11,5 @@ Deno.test("Chat Message - Channel Format Changed", () => {
 })
 
 Deno.test("Whisper Message", () => {
-    assertEquals(commands.whisper("MOONMOON", "hi dad"), "PRIVMSG \w moonmoon hi dad")
+    assertEquals(commands.whisper("MOONMOON", "hi dad"), "PRIVMSG /w moonmoon hi dad")
 })

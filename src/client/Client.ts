@@ -73,9 +73,11 @@ export class Client extends Emitter{
     }
   }
 
-  public async raw(message: string): Promise<void>{
-    if(this.connected)
-      await this.socket.send(message).catch(console.error)
+  public async chat(channel:string, message:string){
+    if(!this.connected)
+      return
+    
+    await this.socket.send(commands.chat(channel, message)).catch(console.error)
   }
 
   public async join(channel: string): Promise<void>{
@@ -99,11 +101,19 @@ export class Client extends Emitter{
       throw console.error(`Error: ${channel} has not been joined - cannot part`)
   }
 
-  public async chat(channel:string, message:string){
-    if(!this.connected)
-      return
-    
-    await this.socket.send(commands.chat(channel, message)).catch(console.error)
+  public async raw(message: string): Promise<void>{
+    if(this.connected)
+      await this.socket.send(message).catch(console.error)
+  }
+
+  public async mods(channel:string):Promise<void>{
+    if(this.connected)
+      await this.socket.send(commands.mods(channel)).catch(console.error)
+  }
+
+  public async whisper(username:string, message:string):Promise<void>{
+    if(this.connected)
+      await this.socket.send(commands.whisper(username, message))
   }
 
   // Handles all incoming messages to determine what event to emit.
@@ -148,6 +158,7 @@ export class Client extends Emitter{
       case 'HOSTTARGET':
         break
       case 'NOTICE':
+        console.log(rawMessage)
         break
       case 'ROOMSTATE':
         break
@@ -159,9 +170,9 @@ export class Client extends Emitter{
       case 'PRIVMSG':
         let newMessage = events.chatMessage(rawMessage)
         if(newMessage.hasOwnProperty('bits'))
-          this.emit('cheerMessage', newMessage)
+          this.emit('cheer', newMessage)
         else
-          this.emit('chatMessage', newMessage)
+          this.emit('chat', newMessage)
         break
       case 'USERNOTICE':
         let usernotice:{[index:string]:any} = events.usernotice(rawMessage)

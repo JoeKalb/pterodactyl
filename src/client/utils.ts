@@ -58,6 +58,10 @@ const _ =  {
         })
 
         return userinfo
+    }, 
+
+    username:(username:string):string => {
+        return username.trim().toLowerCase()
     }
 }
 
