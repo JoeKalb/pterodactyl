@@ -28,7 +28,7 @@ const commands = {
         return `PRIVMSG #tmijs :/color ${color}`
     },
 
-    commerical: (channel:string, seconds:number):string => {
+    commercial: (channel:string, seconds:number):string => {
         seconds = Math.ceil(seconds)
         if(seconds < 30)
             seconds = 30
@@ -116,9 +116,10 @@ const commands = {
         return formatChannelCommand(channel, "/subscribersoff")
     },
 
-    timeout: (channel:string, username:string, reason=""):string => {
+    timeout: (channel:string, username:string, seconds:number, reason=""):string => {
         username = _.username(username)
-        return formatChannelCommand(channel, `/timeout ${username} ${reason}`)
+        seconds = (seconds < 1)? 1:Math.ceil(seconds)
+        return formatChannelCommand(channel, `/timeout ${username} ${seconds} ${reason}`)
     },
 
     unban: (channel:string, username:string):string => {

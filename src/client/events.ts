@@ -17,6 +17,41 @@ const events = {
         return message
     },
 
+    clearChat:(rawMessage:string):{} => {
+        let timeoutOrBan:{[index:string]:any} = {}
+
+        let tempArrayMessage = rawMessage.split(' :')
+
+        // if banDurationTime is "" it will return -1 to show a permenant ban for the channel 
+        let [banDurationName, banDurationTime] = tempArrayMessage[0].substring(1).split('=')
+        timeoutOrBan[banDurationName] = (banDurationTime === "")? -1 : parseInt(banDurationTime)
+
+        timeoutOrBan['channel'] = tempArrayMessage[1]
+            .substring(tempArrayMessage[1].indexOf('#'))
+        timeoutOrBan['username'] = _.username(tempArrayMessage[2])
+
+        return timeoutOrBan
+    },
+
+    clearMessage:(rawMessage:string):{} => {
+        let messageDeleted:{[index:string]:any} = {}
+
+        let tempArrayMessage = rawMessage.split(' :')
+
+        let messageDetails = tempArrayMessage[0].split(';')
+        messageDetails.forEach(e => {
+            let [key, value] = e.split('=')
+            messageDeleted[key] = value
+        })
+
+        messageDeleted['channel'] = tempArrayMessage[1]
+            .substring(tempArrayMessage[1].indexOf('#'))
+
+        messageDeleted['message'] = tempArrayMessage[2].trim()
+
+        return messageDeleted
+    },
+
     roomstate:(rawMessage:string):{} => {
         let roomstate:{[index:string]:any} = {}
 
