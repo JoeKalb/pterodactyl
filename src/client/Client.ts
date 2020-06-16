@@ -223,7 +223,7 @@ export class Client extends Emitter{
     this.sendCommand(channel, commands.unvip(channel, username))
   }
 
-  public async vips(channel:string): Promise<void> {
+  public vips(channel:string): void {
     this.sendCommand(channel, commands.vips(channel))
   }
 
