@@ -21,6 +21,10 @@ let handleMessage = (message: {[index:string]:any}) => {
         client.mods(message.channel)
     else if (message.username === 'joefish5' && message.text === '!whisper')
         client.whisper(message.username, 'this is a test!')
+    else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
+        let parse = message.text.split(' ')
+        client.chat(parse[1], 'hi im new!')
+    }
 }
 
 let handleWhisper = (message: {[index:string]:any}) => {

@@ -1,6 +1,12 @@
 import _ from "./utils.ts";
 
 const events = {
+    '353':(rawMessage:string):{} => {
+        let channelJoined:{[index:string]:any} = {}
+        
+        return channelJoined
+    },
+
     chatMessage:(rawMessage:string):{} => {
         let message:{[index:string]:any} = {}
 

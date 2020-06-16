@@ -73,61 +73,48 @@ export class Client extends Emitter{
     }
   }
 
-  public async chat(channel:string, message:string){
-    if(!this.connected)
-      return
-    
-    await this.socket.send(commands.chat(channel, message)).catch(console.error)
+  public chat(channel:string, message:string): void{
+    this.sendCommand(channel, commands.chat(channel, message))
   }
 
-  public async clearChat(channel:string): Promise<void>{
-    if(this.connected)
-      await this.socket.send(commands.clear(channel)).catch(console.error)
+  public clearChat(channel:string): void{
+    this.sendCommand(channel, commands.clear(channel))
   }
 
-  public async color(color:string): Promise<void>{
-    if(this.connected)
-      await this.socket.send(commands.color(color)).catch(console.error)
+  public color(color:string): void{
+    this.sendCommand(this.channels[0],commands.color(color))
   }
 
-  public async commercial(channel:string, seconds:number): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.commercial(channel, seconds)).catch(console.error)
+  public commercial(channel:string, seconds:number): void {
+    this.sendCommand(channel, commands.commercial(channel, seconds))
   }
 
-  public async deleteMessage(channel:string, messageID:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.deleteMessage(channel, messageID)).catch(console.error)
+  public deleteMessage(channel:string, messageID:string): void {
+    this.sendCommand(channel, commands.deleteMessage(channel, messageID))
   }
 
-  public async emoteOnly(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.emoteOnly(channel)).catch(console.error)
+  public emoteOnly(channel:string): void {
+    this.sendCommand(channel, commands.emoteOnly(channel))
   }
 
-  public async emoteOnlyOff(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.emoteOnlyOff(channel)).catch(console.error)
+  public emoteOnlyOff(channel:string): void {
+    this.sendCommand(channel, commands.emoteOnlyOff(channel))
   }
 
-  public async followers(channel:string, minutes:number): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.followers(channel, minutes)).catch(console.error)
+  public followers(channel:string, minutes:number): void {
+    this.sendCommand(channel, commands.followers(channel, minutes))
   }
 
-  public async followersOff(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.followersOff(channel)).catch(console.error)
+  public followersOff(channel:string): void {
+    this.sendCommand(channel, commands.followersOff(channel))
   }
 
-  public async help(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.help(channel)).catch(console.error)
+  public help(channel:string): void {
+    this.sendCommand(channel, commands.help(channel))
   }
 
-  public async host(channel:string, targetChannel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.host(channel, targetChannel)).catch(console.error)
+  public host(channel:string, targetChannel:string): void {
+    this.sendCommand(channel, commands.host(channel, targetChannel))
   }
 
   public async join(channel: string): Promise<void>{
@@ -137,24 +124,20 @@ export class Client extends Emitter{
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
 
-  public async market(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.marker(channel)).catch(console.error)
+  public market(channel:string): void {
+    this.sendCommand(channel, commands.marker(channel))
   }
 
-  public async me(channel:string, message:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.me(channel, message)).catch(console.error)
+  public me(channel:string, message:string): void {
+    this.sendCommand(channel, commands.me(channel, message))
   }
 
-  public async mod(channel:string, username:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.mod(channel, username)).catch(console.error)
+  public mod(channel:string, username:string): void {
+    this.sendCommand(channel, commands.mod(channel, username))
   }
 
-  public async mods(channel:string):Promise<void>{
-    if(this.connected)
-      await this.socket.send(commands.mods(channel)).catch(console.error)
+  public mods(channel:string): void {
+    this.sendCommand(channel, commands.mods(channel))
   }
 
   public async part(channel: string): Promise<void>{
@@ -171,27 +154,24 @@ export class Client extends Emitter{
       throw console.error(`Error: ${channel} has not been joined - cannot part`)
   }
 
-  public async r9k(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.r9kbeta(channel)).catch(console.error)
+  public r9k(channel:string): void {
+    this.sendCommand(channel, commands.r9kbeta(channel))
   }
 
-  public async r9kBeta(channel:string): Promise<void> {
+  public r9kBeta(channel:string): void {
     this.r9k(channel)
   }
 
-  public async r9kBetaOff(channel:string): Promise<void> {
+  public r9kBetaOff(channel:string): void {
     this.r9kOff(channel)
   }
 
-  public async r9kOff(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.r9kbetaOff(channel)).catch(console.error)
+  public r9kOff(channel:string): void {
+    this.sendCommand(channel, commands.r9kbetaOff(channel))
   }
 
-  public async raid(channel:string, targetChannel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.raid(channel, targetChannel)).catch(console.error)
+  public raid(channel:string, targetChannel:string): void {
+    this.sendCommand(channel, commands.raid(channel, targetChannel))
   }
 
   public async raw(message: string): Promise<void>{
@@ -199,65 +179,52 @@ export class Client extends Emitter{
       await this.socket.send(message).catch(console.error)
   }
 
-  public async slow(channel:string, seconds:number): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.slow(channel, seconds)).catch(console.error)
+  public slow(channel:string, seconds:number): void {
+    this.sendCommand(channel, commands.slow(channel, seconds))
   }
 
-  public async slowOff(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.slowOff(channel)).catch(console.error)
+  public slowOff(channel:string): void {
+    this.sendCommand(channel, commands.slowOff(channel))
   }
 
-  public async subscribersOnly(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.subscribers(channel)).catch(console.error)
+  public subscribersOnly(channel:string): void {
+    this.sendCommand(channel, commands.subscribers(channel))
   }
 
-  public async subscribersOnlyOff(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.subscribersOff(channel)).catch(console.error)
+  public subscribersOnlyOff(channel:string): void {
+    this.sendCommand(channel, commands.subscribersOff(channel))
   }
 
-  public async timeout(channel:string, username:string, seconds:number, reason=""): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.timeout(channel, username, seconds, reason))
-        .catch(console.error)
+  public timeout(channel:string, username:string, seconds:number, reason=""): void {
+    this.sendCommand(channel, commands.timeout(channel, username, seconds, reason))
   }
 
-  public async unban(channel:string, username:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.unban(channel, username)).catch(console.error)
+  public unban(channel:string, username:string): void {
+    this.sendCommand(channel, commands.unban(channel, username))
   }
 
-  public async unhost(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.unhost(channel)).catch(console.error)
+  public unhost(channel:string): void {
+    this.sendCommand(channel, commands.unhost(channel))
   }
 
-  public async unmod(channel:string, username:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.unmod(channel, username))
+  public unmod(channel:string, username:string): void {
+    this.sendCommand(channel, commands.unmod(channel, username))
   }
 
-  public async unraid(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.unraid(channel))
+  public unraid(channel:string): void {
+    this.sendCommand(channel, commands.unraid(channel))
   }
 
-  public async untimeout(channel:string, username:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.untimeout(channel, username)).catch(console.error)
+  public untimeout(channel:string, username:string): void {
+    this.sendCommand(channel, commands.untimeout(channel, username))
   }
 
-  public async upvip(channel:string, username:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.unvip(channel, username)).catch(console.error)
+  public upvip(channel:string, username:string): void {
+    this.sendCommand(channel, commands.unvip(channel, username))
   }
 
   public async vips(channel:string): Promise<void> {
-    if(this.connected)
-      await this.socket.send(commands.vips(channel)).catch(console.error)
+    this.sendCommand(channel, commands.vips(channel))
   }
 
   public async whisper(username:string, message:string):Promise<void>{
@@ -284,6 +251,7 @@ export class Client extends Emitter{
         break
       case '353':
         this.confirmChannelJoin(rawMessage)
+        this.emit('channelJoined', true)
         break
       case '366':
         break
@@ -347,5 +315,18 @@ export class Client extends Emitter{
 
     if(username === this.username && !this.channels.includes(channel))
       this.channels = [...this.channels, channel]
+  }
+
+  private async sendCommand(channel:string, command:string): Promise<void> {
+    if(!this.connected)
+      return
+    
+    channel = _.channel(channel)
+    if(!this.channels.includes(channel)){
+      await this.join(channel)
+      await this.on('channelJoined', (channel:{}) => { console.log(channel) })
+    }
+
+    await this.socket.send(command).catch(console.error)
   }
 }
