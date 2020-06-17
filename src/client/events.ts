@@ -1,4 +1,6 @@
 import _ from "./utils.ts";
+import { Message } from "../structures/Message.ts";
+import { User } from "../structures/User.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {
@@ -20,7 +22,8 @@ const events = {
             .substring(tempArrayMessage[1].indexOf("#"))
         message['text'] = tempArrayMessage[2].trim()
 
-        return message
+        //return message
+        return new Message(message)
     },
 
     clearChat:(rawMessage:string):{} => {
@@ -56,6 +59,14 @@ const events = {
         messageDeleted['message'] = tempArrayMessage[2].trim()
 
         return messageDeleted
+    },
+
+    join:(rawMessage:string):User => {
+        return new User(_.joinOrPart(rawMessage))
+    },
+
+    part:(rawMessage:string):User => {
+        return new User(_.joinOrPart(rawMessage))
     },
 
     roomstate:(rawMessage:string):{} => {

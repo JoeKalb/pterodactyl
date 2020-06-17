@@ -10,6 +10,25 @@ const _ =  {
         return channel
     },
 
+    emoteBreakdown(emoteString:string):any[]{
+        if(emoteString === "") return []
+
+        return emoteString.split('/')
+        /* return emoteString.split('/').map(e => {
+            ({
+                emoteID:e.substring(e.indexOf(':')),
+                chatPositions:e.substring(e.indexOf(':')+1)
+            })
+        }) */
+    },
+
+    joinOrPart(rawMessage:string):{username:string, channel:string} {
+        return {
+            username: rawMessage.substring(1, rawMessage.indexOf('!')),
+            channel: rawMessage.substring(rawMessage.indexOf('#')).trimEnd()
+        }
+    },
+
     messageType(msg: string):string{
         let start = 0
         let end = msg.indexOf(' ')

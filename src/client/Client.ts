@@ -23,7 +23,7 @@ export class Client extends Emitter{
     channels:string[]}){
     super();
     this.password = opts.password
-    this.username = opts.username.toLowerCase()
+    this.username = _.username(opts.username)
     this.channels = opts.channels
   }
   
@@ -236,7 +236,7 @@ export class Client extends Emitter{
   private async handleEvents(rawMessage: string): Promise<void>{
     const messageType = _.messageType(rawMessage)
     //console.log(messageType)
-    console.log(rawMessage)
+    //console.log(rawMessage)
 
     switch(messageType){
       case '001':

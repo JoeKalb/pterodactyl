@@ -6,12 +6,14 @@ const opts = {
     username:config().TWITCH_USERNAME,
     channels:[
         'joefish5',
-        'botfish5'
+        'botfish5',
+        'taylien'
     ]
 }
 const client = new Client(opts)
 
 let handleMessage = (message: {[index:string]:any}) => {
+    console.log(message)
     if(message.text === '!ping')
         client.chat(message.channel, "pong")
     else if(message.text === '!join' && message.channel === '#botfish5'){
