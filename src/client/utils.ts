@@ -11,7 +11,8 @@ const _ =  {
     },
 
     emoteBreakdown(emoteString:string):any[]{
-        if(emoteString === "") return []
+        if(emoteString === "" || emoteString === undefined) 
+            return []
 
         return emoteString.split('/')
         /* return emoteString.split('/').map(e => {
@@ -51,8 +52,12 @@ const _ =  {
 
             if(isNumberType(key))
                 value = Number(value)
+            else if(key === "rituals")
+                value = value
             else if(value === "0" || value === "1")
                 value = (value === "1") ? true:false
+
+            roomstate[key] = value
         })
 
         return roomstate

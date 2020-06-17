@@ -281,6 +281,7 @@ export class Client extends Emitter{
         console.log(rawMessage)
         break
       case 'ROOMSTATE':
+        this.emit('roomState', events.roomstate(rawMessage))
         break
       case 'PART':
         break

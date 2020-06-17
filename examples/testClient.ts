@@ -1,4 +1,9 @@
-import { Client } from "../mod.ts";
+import {
+    Client,
+    Message,
+    User,
+    Whisper
+    } from "../mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const opts = {
@@ -7,13 +12,14 @@ const opts = {
     channels:[
         'joefish5',
         'botfish5',
-        'taylien'
+        'thatzigygirl',
+        'timthetatman'
     ]
 }
 const client = new Client(opts)
 
-let handleMessage = (message: {[index:string]:any}) => {
-    console.log(message)
+let handleMessage = (message: Message) => {
+    //console.log(message)
     if(message.text === '!ping')
         client.chat(message.channel, "pong")
     else if(message.text === '!join' && message.channel === '#botfish5'){
@@ -29,9 +35,9 @@ let handleMessage = (message: {[index:string]:any}) => {
     }
 }
 
-let handleWhisper = (message: {[index:string]:any}) => {
-    if(message.username === 'joefish5')
-        client.whisper(message.username, 'hmmmmm')
+let handleWhisper = (whisper: Whisper) => {
+    if(whisper.username === 'joefish5' && whisper.emotes)
+        console.log(whisper.emotes[0].getEmoteURL())
 }
 
 client.on('chat', handleMessage)

@@ -1,6 +1,8 @@
 import _ from "./utils.ts";
 import { Message } from "../structures/Message.ts";
+import { Roomstate } from "../structures/Roomstate.ts";
 import { User } from "../structures/User.ts";
+import { Whisper } from "../../mod.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {
@@ -69,7 +71,7 @@ const events = {
         return new User(_.joinOrPart(rawMessage))
     },
 
-    roomstate:(rawMessage:string):{} => {
+    roomstate:(rawMessage:string):Roomstate => {
         let roomstate:{[index:string]:any} = {}
 
         let tempArrayRoomstate = rawMessage.split(' :')
@@ -77,9 +79,9 @@ const events = {
         roomstate = { ..._.roomstateDetails(tempArrayRoomstate[0]) }
 
         roomstate['channel'] = tempArrayRoomstate[1]
-            .substring(tempArrayRoomstate[1].indexOf('#'))
+            .substring(tempArrayRoomstate[1].indexOf('#')).trimEnd()
 
-        return roomstate
+        return new Roomstate(roomstate)
     },
 
     usernotice:(rawMessage:string):{} => {
@@ -99,7 +101,7 @@ const events = {
         return usernotice
     }, 
 
-    whisper:(rawMessage:string):{} => {
+    whisper:(rawMessage:string):Whisper => {
         let message:{[index:string]:any} = {}
 
         let tempArrayMessage = rawMessage.split(' :')
@@ -110,7 +112,7 @@ const events = {
             .substring(0, tempArrayMessage[1].indexOf('!'))
         message['text'] = tempArrayMessage[2].trim()
 
-        return message
+        return new Whisper(message)
     }
 }
 

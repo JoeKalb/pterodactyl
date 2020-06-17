@@ -1,4 +1,5 @@
 import _ from "../client/utils.ts";
+import { Emote } from "./Emote.ts";
 import { User } from "./User.ts";
 
 export class Message extends User {
@@ -6,15 +7,15 @@ export class Message extends User {
     public badges?:string[]
     public client_nonce?:string
     public color?:string
-    public display_name?:string
+    public display_name!:string
     public emote_only?:boolean
-    public emotes:any[]
+    public emotes:Emote[]
     public flags?:string
     public id?:string
     public mod:boolean = false
     public room_id?:string
     public subscriber?:boolean
-    public text?:string
+    public text!:string
     public tmi_sent_ts?:string
     public turbo?:boolean
     public user_id?:string
@@ -28,14 +29,16 @@ export class Message extends User {
         })
 
         this.badge_info = params['badge-info']
-        this.badges = params['badges'].split(',')
+        this.badges = (params['badges'].length > 0) 
+            ? params['badges'].split(',')
+            : []
         this.client_nonce = params['client-nonce']
         this.color = params['color']
         this.display_name = params['display-name']
-        this.emote_only = (params.hasOwnProperty('emote-only'))
-            ? params['emote-only']
-            : false
-        this.emotes =  _.emoteBreakdown(params['emotes'])
+        this.emote_only =  params['emote-only'] || false
+        this.emotes =  _.emoteBreakdown(params['emotes']).map(e => {
+            return new Emote(e)
+        })
         this.flags = params['flags']
         this.id = params['id']
         this.mod = params['mod']
