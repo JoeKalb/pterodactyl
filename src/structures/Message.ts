@@ -1,4 +1,5 @@
 import _ from "../client/utils.ts";
+import commands from "../client/commands.ts";
 import { Emote } from "./Emote.ts";
 import { User } from "./User.ts";
 
@@ -56,5 +57,9 @@ export class Message extends User {
 
     public isMod():boolean {
         return this.mod
+    }
+
+    public reply(message:string):string {
+        return commands.chat(this.channel, `@${this.display_name} ${message}`)
     }
 }

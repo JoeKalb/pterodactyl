@@ -12,8 +12,6 @@ const opts = {
     channels:[
         'joefish5',
         'botfish5',
-        'thatzigygirl',
-        'timthetatman'
     ]
 }
 const client = new Client(opts)
@@ -21,7 +19,7 @@ const client = new Client(opts)
 let handleMessage = (message: Message) => {
     //console.log(message)
     if(message.text === '!ping')
-        client.chat(message.channel, "pong")
+        client.raw(message.reply("pong"))
     else if(message.text === '!join' && message.channel === '#botfish5'){
         client.join(message.username)
     }
