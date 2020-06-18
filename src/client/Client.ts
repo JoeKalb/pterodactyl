@@ -289,7 +289,7 @@ export class Client extends Emitter{
         await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
         break
       case 'PRIVMSG':
-        let newMessage = events.chatMessage(rawMessage)
+        let newMessage = events.chatMessage(this, rawMessage)
         if(newMessage.hasOwnProperty('bits'))
           this.emit('cheer', newMessage)
         else
@@ -302,7 +302,7 @@ export class Client extends Emitter{
       case 'USERSTATE':
         break
       case 'WHISPER':
-        this.emit('whisper', events.whisper(rawMessage))
+        this.emit('whisper', events.whisper(this, rawMessage))
         break
 
       default:

@@ -1,9 +1,11 @@
 import _ from "../client/utils.ts";
 import commands from "../client/commands.ts";
+import { Client } from "../client/Client.ts";
 import { Emote } from "./Emote.ts";
 import { User } from "./User.ts";
 
 export class Message extends User {
+    private client!:Client
     public badge_info?:string
     public badges?:string[]
     public client_nonce?:string
@@ -23,11 +25,13 @@ export class Message extends User {
     public user_type?:string
     
 
-    constructor(params:{[index:string]:any}){
+    constructor(client:Client, params:{[index:string]:any}){
         super({ 
             username:params.username,
             channel:params.channel
         })
+
+        this.client = client
 
         this.badge_info = params['badge-info']
         this.badges = (params['badges'].length > 0) 
@@ -59,7 +63,11 @@ export class Message extends User {
         return this.mod
     }
 
-    public reply(message:string):string {
-        return commands.chat(this.channel, `@${this.display_name} ${message}`)
+    public reply(message:string):void {
+        this.client.chat(this.channel, `@${this.display_name} ${message}`)
+    }
+
+    public chat(message:string):void {
+        this.client.chat(this.channel, message)
     }
 }

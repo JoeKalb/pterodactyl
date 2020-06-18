@@ -1,4 +1,5 @@
 import _ from "./utils.ts";
+import { Client } from "./Client.ts";
 import { Message } from "../structures/Message.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
 import { User } from "../structures/User.ts";
@@ -11,7 +12,7 @@ const events = {
         return channelJoined
     },
 
-    chatMessage:(rawMessage:string):{} => {
+    chatMessage:(client:Client, rawMessage:string):{} => {
         let message:{[index:string]:any} = {}
 
         let tempArrayMessage = rawMessage.split(' :')
@@ -25,7 +26,7 @@ const events = {
         message['text'] = tempArrayMessage[2].trim()
 
         //return message
-        return new Message(message)
+        return new Message(client, message)
     },
 
     clearChat:(rawMessage:string):{} => {
@@ -101,7 +102,7 @@ const events = {
         return usernotice
     }, 
 
-    whisper:(rawMessage:string):Whisper => {
+    whisper:(client:Client, rawMessage:string):Whisper => {
         let message:{[index:string]:any} = {}
 
         let tempArrayMessage = rawMessage.split(' :')
@@ -112,7 +113,7 @@ const events = {
             .substring(0, tempArrayMessage[1].indexOf('!'))
         message['text'] = tempArrayMessage[2].trim()
 
-        return new Whisper(message)
+        return new Whisper(client, message)
     }
 }
 

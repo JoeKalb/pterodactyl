@@ -19,7 +19,7 @@ const client = new Client(opts)
 let handleMessage = (message: Message) => {
     //console.log(message)
     if(message.text === '!ping')
-        client.raw(message.reply("pong"))
+        message.reply("pong")
     else if(message.text === '!join' && message.channel === '#botfish5'){
         client.join(message.username)
     }
@@ -35,7 +35,7 @@ let handleMessage = (message: Message) => {
 
 let handleWhisper = (whisper: Whisper) => {
     if(whisper.username === 'joefish5' && whisper.emotes)
-        console.log(whisper.emotes[0].getEmoteURL())
+        whisper.send('hallo!')
 }
 
 client.on('chat', handleMessage)

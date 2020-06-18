@@ -1,7 +1,9 @@
 import _ from "../client/utils.ts";
+import { Client } from "../../mod.ts";
 import { Emote } from "./Emote.ts";
 
 export class Whisper{
+    private client!:Client
     public badges!:[string]
     public color!:string
     public display_name!:string
@@ -14,7 +16,8 @@ export class Whisper{
     public user_type!:string
     public username!:string
 
-    constructor(params:{[index:string]:any}){
+    constructor(client:Client, params:{[index:string]:any}){
+        this.client = client
         this.badges = params['badges'].split(',')
         this.color = params['color']
         this.display_name = params['display-name']
@@ -28,5 +31,9 @@ export class Whisper{
         this.user_id = params['user-id']
         this.user_type = params['user-type']
         this.username = params['username']
+    }
+
+    public send(message:string):void {
+        this.client.whisper(this.username, message)
     }
 }
