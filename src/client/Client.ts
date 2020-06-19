@@ -73,6 +73,17 @@ export class Client extends Emitter{
     }
   }
 
+  private async reconnect(): Promise<void>{
+    while(!this.connected){
+      (this.interval === 0) ? this.interval = 1 : this.interval *=2
+      setTimeout(() => {
+        this.connect()
+      }, this.interval * 1000)
+    }
+
+    this.interval = 0
+  }
+
   public ban(channel:string, username:string, reason=""): void{
     this.sendCommand(channel, commands.ban(channel, username, reason))
   }
@@ -293,7 +304,7 @@ export class Client extends Emitter{
         this.emit('roomState', events.roomstate(rawMessage))
         break
       case 'RECONNECT':
-        this.connect()
+        this.reconnect()
         break
       case 'PART':
         break

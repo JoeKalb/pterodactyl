@@ -1,14 +1,12 @@
-import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
+let x = 1
 
-const emitter = new Emitter();
-
-// Subscribe to this event
-emitter.on("did-change-name", (name: string) => {
-  console.log(name);
-});
-
-// Trigger the event
-emitter.emit("did-change-name", "david");
-
-// Remove the emitter instance
-emitter.dispose();
+x *= 2
+console.log(x)
+x *= 2
+console.log(x)
+x *= 2
+console.log(x)
+x *= 2
+console.log(x)
+x *= 2
+console.log(x)
