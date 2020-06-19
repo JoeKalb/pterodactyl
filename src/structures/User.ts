@@ -1,9 +1,23 @@
-export class User{
-    public username!:string
-    public channel!:string
+import { Client } from "../client/Client.ts";
 
-    constructor(params:{ username:string, channel:string }){
-        this.username = params.username
+export class User{
+    protected client!:Client
+    public channel!:string
+    public username!:string
+    
+
+    constructor(client:Client, params:{ username:string, channel:string }){
+        this.client = client
+
         this.channel = params.channel
+        this.username = params.username
+    }
+
+    public ban(reason=""):void {
+        this.client.ban(this.channel, this.username, reason)
+    }
+
+    public timeout(seconds:number, reason=""):void {
+        this.client.timeout(this.channel, this.username, seconds, reason)
     }
 }

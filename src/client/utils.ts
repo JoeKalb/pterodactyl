@@ -2,7 +2,7 @@
 
 const _ =  {
     channel(channel: string):string{
-        channel = channel.toLocaleLowerCase()
+        channel = channel.toLocaleLowerCase().trim()
 
         if(channel[0] !== '#')
             channel = `#${channel}`

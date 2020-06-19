@@ -1,6 +1,7 @@
 import _ from "./utils.ts";
 import { Client } from "./Client.ts";
 import { Message } from "../structures/Message.ts";
+import { Notice } from "../structures/Notice.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
 import { User } from "../structures/User.ts";
 import { Whisper } from "../../mod.ts";
@@ -64,12 +65,26 @@ const events = {
         return messageDeleted
     },
 
-    join:(rawMessage:string):User => {
-        return new User(_.joinOrPart(rawMessage))
+    join:(client:Client, rawMessage:string):User => {
+        return new User(client, _.joinOrPart(rawMessage))
     },
 
-    part:(rawMessage:string):User => {
-        return new User(_.joinOrPart(rawMessage))
+    notice:(rawMessage:string):Notice => {
+        let tempNoticeObject:{[index:string]:string} = {}
+
+        let tempArrayNotice = rawMessage.split(' :')
+
+        tempNoticeObject['msg-id'] = tempArrayNotice[0]
+            .substring(tempArrayNotice[0].indexOf('=')+1)
+        tempNoticeObject['channel'] = _.channel(tempArrayNotice[1]
+            .substring(tempArrayNotice[1].indexOf('#')))
+        tempNoticeObject['message'] = tempArrayNotice[2].trim()
+
+        return new Notice(tempNoticeObject)
+    },
+
+    part:(client:Client, rawMessage:string):User => {
+        return new User(client, _.joinOrPart(rawMessage))
     },
 
     roomstate:(rawMessage:string):Roomstate => {

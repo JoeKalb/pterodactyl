@@ -56,3 +56,4 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 Inspiration, code snippets, etc.
 * [tmi.js](https://github.com/tmijs/tmi.js)
+* [discord.js](https://discord.js.org/#/)

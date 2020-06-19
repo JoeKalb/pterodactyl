@@ -1,6 +1,7 @@
 import {
     Client,
     Message,
+    Notice,
     User,
     Whisper
     } from "../mod.ts";
@@ -12,6 +13,7 @@ const opts = {
     channels:[
         'joefish5',
         'botfish5',
+        'larkonline'
     ]
 }
 const client = new Client(opts)
@@ -26,11 +28,15 @@ let handleMessage = (message: Message) => {
     else if(message.username === 'joefish5' && message.text === '!mods')
         client.mods(message.channel)
     else if (message.username === 'joefish5' && message.text === '!whisper')
-        client.whisper(message.username, 'this is a test!')
+        message.whisper('This is a test!')
     else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
         let parse = message.text.split(' ')
         client.chat(parse[1], 'hi im new!')
     }
+}
+
+let handleNotice = (notice: Notice) => {
+    console.log(notice)
 }
 
 let handleWhisper = (whisper: Whisper) => {
@@ -39,6 +45,7 @@ let handleWhisper = (whisper: Whisper) => {
 }
 
 client.on('chat', handleMessage)
+client.on('notice', handleNotice)
 client.on('whisper', handleWhisper)
 //client.on('resub', (info: {[index:string]:any}) => { console.log(info) })
 

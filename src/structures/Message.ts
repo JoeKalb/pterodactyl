@@ -1,11 +1,9 @@
 import _ from "../client/utils.ts";
-import commands from "../client/commands.ts";
 import { Client } from "../client/Client.ts";
 import { Emote } from "./Emote.ts";
 import { User } from "./User.ts";
 
 export class Message extends User {
-    private client!:Client
     public badge_info?:string
     public badges?:string[]
     public client_nonce?:string
@@ -14,7 +12,7 @@ export class Message extends User {
     public emote_only?:boolean
     public emotes:Emote[]
     public flags?:string
-    public id?:string
+    public id!:string
     public mod:boolean = false
     public room_id?:string
     public subscriber?:boolean
@@ -23,15 +21,12 @@ export class Message extends User {
     public turbo?:boolean
     public user_id?:string
     public user_type?:string
-    
 
     constructor(client:Client, params:{[index:string]:any}){
-        super({ 
+        super(client,{ 
             username:params.username,
             channel:params.channel
         })
-
-        this.client = client
 
         this.badge_info = params['badge-info']
         this.badges = (params['badges'].length > 0) 
@@ -63,11 +58,28 @@ export class Message extends User {
         return this.mod
     }
 
+    // Client Interfaces for a shortcut to specific commands
+    public chat(message:string):void {
+        this.client.chat(this.channel, message)
+    }
+
+    public deleteMessage():void {
+        this.client.deleteMessage(this.channel, this.id)
+    }
+
+    public me(message:string):void {
+        this.client.me(this.channel, message)
+    }
+
     public reply(message:string):void {
         this.client.chat(this.channel, `@${this.display_name} ${message}`)
     }
 
-    public chat(message:string):void {
-        this.client.chat(this.channel, message)
+    public send(message:string):void {
+        this.chat(message)
+    }
+
+    public whisper(message:string):void {
+        this.client.whisper(this.username, message)
     }
 }

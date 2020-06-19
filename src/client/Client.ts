@@ -12,8 +12,8 @@ export class Client extends Emitter{
   public socket!: WebSocket;
   public channels: string[] = []
 
-  private password: string = ""
-  private username: string = ""
+  private password!: string
+  private username!: string
   private interval: number = 0
   private connected: boolean = false
 
@@ -71,6 +71,10 @@ export class Client extends Emitter{
       this.connected = false
       await this.socket.close(1000).catch(console.error)
     }
+  }
+
+  public ban(channel:string, username:string, reason=""): void{
+    this.sendCommand(channel, commands.ban(channel, username, reason))
   }
 
   public chat(channel:string, message:string): void{
@@ -179,6 +183,10 @@ export class Client extends Emitter{
       await this.socket.send(message).catch(console.error)
   }
 
+  public say(channel:string, message:string):void {
+    this.chat(channel, message)
+  }
+
   public slow(channel:string, seconds:number): void {
     this.sendCommand(channel, commands.slow(channel, seconds))
   }
@@ -262,6 +270,7 @@ export class Client extends Emitter{
       case '376':
         break
       case '421':
+        console.log(rawMessage)
         break
       case 'CAP':
         break
@@ -278,10 +287,13 @@ export class Client extends Emitter{
       case 'HOSTTARGET':
         break
       case 'NOTICE':
-        console.log(rawMessage)
+        this.emit('notice', events.notice(rawMessage))
         break
       case 'ROOMSTATE':
         this.emit('roomState', events.roomstate(rawMessage))
+        break
+      case 'RECONNECT':
+        this.connect()
         break
       case 'PART':
         break
