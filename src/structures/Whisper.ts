@@ -33,6 +33,10 @@ export class Whisper{
         this.username = params['username']
     }
 
+    public hasEmotes():boolean {
+        return this.emotes.length > 0
+    }
+
     public send(message:string):void {
         this.client.whisper(this.username, message)
     }

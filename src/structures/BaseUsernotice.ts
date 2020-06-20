@@ -5,7 +5,7 @@ import _ from "../client/utils.ts";
 
 export class Base extends User{
     public badge_info!:string
-    public badges!:string
+    public badges!:string[]
     public color!:string
     public display_name!:string
     public emotes!:Emote[]
@@ -28,7 +28,9 @@ export class Base extends User{
             channel:params.channel
         })
         this.badge_info = params['badge-info']
-        this.badges = params['badges']
+        this.badges = (params['badges'].length > 0) 
+            ? params['badges'].split(',')
+            : []
         this.color = params['color']
         this.display_name = params['display-name']
         this.emotes = _.emoteBreakdown(params['emotes']).map(e =>{
@@ -46,5 +48,17 @@ export class Base extends User{
         this.turbo = params['turbo']
         this.user_id = params['user-id']
         this.user_type = params['user-type']
+    }
+
+    public reply(message:string):void {
+        this.client.chat(this.channel, `@${this.display_name} ${message}`)
+    }
+
+    public send(message:string):void {
+        this.client.chat(this.channel, message)
+    }
+
+    public whisper(message:string):void {
+        this.client.whisper(this.username, message)
     }
 }

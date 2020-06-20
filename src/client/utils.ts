@@ -91,10 +91,15 @@ const _ =  {
 
 let isNumberType = (key:string):boolean => {
     return (key === 'msg-param-cumulative-months')
+        || (key === 'msg-param-mass-gift-count')
         || (key === 'msg-param-months')
         || (key === 'msg-param-promo-gift-total')
+        || (key === 'msg-param-sender-count')
         || (key === 'msg-param-streak-months')
         || (key === 'msg-param-viewerCount')
+        || (key === 'msg-param-selected-count')
+        || (key === 'msg-param-total-reward-count')
+        || (key === 'msg-param-trigger-amount')
         || (key === 'bits')
         || (key === 'slow')
         || (key === 'followers-only')

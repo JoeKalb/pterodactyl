@@ -13,8 +13,10 @@ const opts = {
     channels:[
         'joefish5',
         'botfish5',
-        'larkonline',
-        'lunalyrik'
+        'ashm0nster',
+        'lunalyrik',
+        'hapabott',
+        'larkonline'
     ]
 }
 const client = new Client(opts)
@@ -41,7 +43,7 @@ let handleNotice = (notice: Notice) => {
 }
 
 let handleWhisper = (whisper: Whisper) => {
-    if(whisper.username === 'joefish5' && whisper.emotes)
+    if(whisper.username === 'joefish5' && whisper.hasEmotes())
         whisper.send('hallo!')
 }
 

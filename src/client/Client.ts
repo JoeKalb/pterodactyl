@@ -7,7 +7,6 @@ import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
 import _ from "./utils.ts";
 import commands from "./commands.ts";
 import events from "./events.ts";
-import { Sub } from "../structures/Sub.ts";
 
 export class Client extends Emitter{
   public socket!: WebSocket;
@@ -320,39 +319,7 @@ export class Client extends Emitter{
           this.emit('chat', newMessage)
         break
       case 'USERNOTICE':
-        let usernotice:{[index:string]:any} = events.usernotice(rawMessage)
-        let notice = {}
-        switch(usernotice['msg-id']){
-          case 'sub':
-            notice = new Sub(this, usernotice)
-            break
-          case 'resub':
-            notice = new Sub(this, usernotice)
-            break
-          case 'subgift':
-            break
-          case 'anonsubgift':
-            break
-          case 'submysterygift':
-            break
-          case 'giftpaidupgrade':
-            break
-          case 'rewardgift':
-            break
-          case 'anongiftpaidupgrade':
-            break
-          case 'raid':
-            break
-          case 'unraid':
-            break
-          case 'ritual':
-            break
-          case 'bitsbadgetier':
-            break
-          default:
-            console.log(usernotice)
-        }
-        this.emit(usernotice['msg-id'], notice)
+        this.usernoticeHandler(events.usernotice(rawMessage))
         break
       case 'USERSTATE':
         break
@@ -384,5 +351,43 @@ export class Client extends Emitter{
     }
 
     await this.socket.send(command).catch(console.error)
+  }
+
+  private usernoticeHandler(usernotice:{[index:string]:any}):void {
+    let notice = {}
+    switch(usernotice['msg-id']){
+      case 'sub':
+        notice = events.sub(this, usernotice)
+        break
+      case 'resub':
+        notice = events.resub(this, usernotice)
+        break
+      case 'subgift':
+        notice = events.subgift(this, usernotice)
+        break
+      case 'anonsubgift':
+        break
+      case 'submysterygift':
+        break
+      case 'giftpaidupgrade':
+        break
+      case 'rewardgift':
+        break
+      case 'anongiftpaidupgrade':
+        break
+      case 'raid':
+        notice = events.raid(this, usernotice)
+        break
+      case 'unraid':
+        break
+      case 'ritual':
+        break
+      case 'bitsbadgetier':
+        break
+      default:
+        console.log(usernotice)
+    }
+    console.log(usernotice, notice)
+    this.emit(usernotice['msg-id'], notice)
   }
 }

@@ -2,7 +2,12 @@ import _ from "./utils.ts";
 import { Client } from "./Client.ts";
 import { Message } from "../structures/Message.ts";
 import { Notice } from "../structures/Notice.ts";
+import { Raid } from "../structures/Raid.ts";
+import { Rewardgift } from "../structures/Rewardgift.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
+import { Sub } from "../structures/Sub.ts";
+import { Subgift } from "../structures/Subgift.ts";
+import { Submysterygift } from "../structures/Submysterygift.ts";
 import { User } from "../structures/User.ts";
 import { Whisper } from "../../mod.ts";
 
@@ -87,6 +92,18 @@ const events = {
         return new User(client, _.joinOrPart(rawMessage))
     },
 
+    raid:(client:Client, usernotice:{[index:string]:any}):Raid => {
+        return new Raid(client, usernotice)
+    },
+
+    resub:(client:Client, usernotice:{[index:string]:any}):Sub => {
+        return new Sub(client, usernotice)
+    },
+
+    rewardGift:(client:Client, usernotice:{[index:string]:any}):Rewardgift => {
+        return new Rewardgift(client, usernotice)
+    },
+
     roomstate:(rawMessage:string):Roomstate => {
         let roomstate:{[index:string]:any} = {}
 
@@ -98,6 +115,18 @@ const events = {
             .substring(tempArrayRoomstate[1].indexOf('#')).trimEnd()
 
         return new Roomstate(roomstate)
+    },
+
+    sub:(client:Client, usernotice:{[index:string]:any}):Sub => {
+        return new Sub(client, usernotice)
+    },
+
+    subgift:(client:Client, usernotice:{[index:string]:any}):Subgift => {
+        return new Subgift(client, usernotice)
+    },
+
+    submysterygift:(client:Client, usernotice:{[index:string]:any}):Submysterygift => {
+        return new Submysterygift(client, usernotice)
     },
 
     usernotice:(rawMessage:string):{} => {
