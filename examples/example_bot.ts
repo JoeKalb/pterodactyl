@@ -13,7 +13,8 @@ const opts = {
     channels:[
         'joefish5',
         'botfish5',
-        'larkonline'
+        'larkonline',
+        'lunalyrik'
     ]
 }
 const client = new Client(opts)

@@ -7,6 +7,7 @@ import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
 import _ from "./utils.ts";
 import commands from "./commands.ts";
 import events from "./events.ts";
+import { Sub } from "../structures/Sub.ts";
 
 export class Client extends Emitter{
   public socket!: WebSocket;
@@ -320,7 +321,38 @@ export class Client extends Emitter{
         break
       case 'USERNOTICE':
         let usernotice:{[index:string]:any} = events.usernotice(rawMessage)
-        this.emit(usernotice['msg-id'], usernotice)
+        let notice = {}
+        switch(usernotice['msg-id']){
+          case 'sub':
+            notice = new Sub(this, usernotice)
+            break
+          case 'resub':
+            notice = new Sub(this, usernotice)
+            break
+          case 'subgift':
+            break
+          case 'anonsubgift':
+            break
+          case 'submysterygift':
+            break
+          case 'giftpaidupgrade':
+            break
+          case 'rewardgift':
+            break
+          case 'anongiftpaidupgrade':
+            break
+          case 'raid':
+            break
+          case 'unraid':
+            break
+          case 'ritual':
+            break
+          case 'bitsbadgetier':
+            break
+          default:
+            console.log(usernotice)
+        }
+        this.emit(usernotice['msg-id'], notice)
         break
       case 'USERSTATE':
         break
