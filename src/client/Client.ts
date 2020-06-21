@@ -372,6 +372,7 @@ export class Client extends Emitter{
       case 'giftpaidupgrade':
         break
       case 'rewardgift':
+        notice = events.rewardGift(this, usernotice)
         break
       case 'anongiftpaidupgrade':
         break

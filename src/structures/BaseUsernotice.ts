@@ -11,7 +11,7 @@ export class Base extends User{
     public emotes!:Emote[]
     public id!:string
     public login!:string
-    public message!:string
+    public message?:string
     public mod!:boolean
     public msg_id!:string
     public room_id!:string
@@ -38,7 +38,8 @@ export class Base extends User{
         })
         this.id = params['id']
         this.login = params['login']
-        this.message = params['message']
+        if(params.hasOwnProperty('message'))
+            this.message = params['message']
         this.mod = params['mod']
         this.msg_id = params['msg-id']
         this.room_id = params['room-id']

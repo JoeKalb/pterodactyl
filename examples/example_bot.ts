@@ -16,7 +16,8 @@ const opts = {
         'ashm0nster',
         'lunalyrik',
         'hapabott',
-        'larkonline'
+        'larkonline',
+        'palmbee'
     ]
 }
 const client = new Client(opts)
