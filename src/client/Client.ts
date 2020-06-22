@@ -4,24 +4,33 @@ import {
   WebSocket
 } from "https://deno.land/std/ws/mod.ts";
 import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
+import { green, red } from "https://deno.land/std/fmt/colors.ts";
+//import { EventEmitter } from "https://deno.land/std/node/events.ts"; // using std EventEmitter works but has errors in the VScode extensions
+
 import _ from "./utils.ts";
 import commands from "./commands.ts";
 import events from "./events.ts";
+
+import { Userstate } from "../structures/Userstate.ts";
 
 export class Client extends Emitter{
   public socket!: WebSocket;
   public channels: string[] = []
 
+  private twitch_client_id!:string
   private password!: string
   private username!: string
   private interval: number = 0
   private connected: boolean = false
+  private userstates:{[index:string]:Userstate} = {}
 
   public constructor(opts:{
+    client_id:string,
     password:string,
     username:string,
     channels:string[]}){
     super();
+    this.twitch_client_id = opts.client_id
     this.password = opts.password
     this.username = _.username(opts.username)
     this.channels = opts.channels
@@ -164,6 +173,7 @@ export class Client extends Emitter{
     if(this.channels.includes(channel)){
       await this.socket.send(`PART ${channel}`).catch(console.error)
       this.channels.splice(this.channels.indexOf(channel), 1)
+      delete this.userstates[channel]
     }
     else
       throw console.error(`Error: ${channel} has not been joined - cannot part`)
@@ -261,6 +271,7 @@ export class Client extends Emitter{
       case '001':
         // Client is connected to Twitch WebSocket Client
         this.connected = true
+        console.log(green(`Listening to Twitch IRC on port: ${JSON.parse(JSON.stringify(this.socket.conn.localAddr)).port}`))
         break
       case '002':
         break
@@ -293,9 +304,10 @@ export class Client extends Emitter{
         this.emit('messageDeleted', events.clearMessage(rawMessage))
         break
       case 'JOIN':
-        //console.log(message)
+        this.emit('join', events.join(this, rawMessage))
         break
       case 'HOSTTARGET':
+        console.log(`HOSTTARGET: ${rawMessage}`)
         break
       case 'NOTICE':
         this.emit('notice', events.notice(rawMessage))
@@ -307,6 +319,7 @@ export class Client extends Emitter{
         this.reconnect()
         break
       case 'PART':
+        this.emit('part', events.part(this, rawMessage))
         break
       case 'PING':
         await this.socket.send("PONG :tmi.twitch.tv").catch(console.error)
@@ -322,6 +335,8 @@ export class Client extends Emitter{
         this.usernoticeHandler(events.usernotice(rawMessage))
         break
       case 'USERSTATE':
+        let newUserstate = new Userstate(this.twitch_client_id, events.userstate(rawMessage))
+        this.userstates[newUserstate.channel] = newUserstate
         break
       case 'WHISPER':
         this.emit('whisper', events.whisper(this, rawMessage))
@@ -341,13 +356,15 @@ export class Client extends Emitter{
   }
 
   private async sendCommand(channel:string, command:string): Promise<void> {
-    if(!this.connected)
+    if(!this.connected){
+      console.log(red('Client is currently not connected to twitch. Hint: client.connect()'))
       return
+    }
     
     channel = _.channel(channel)
     if(!this.channels.includes(channel)){
       await this.join(channel)
-      await this.on('channelJoined', (channel:{}) => { console.log(channel) })
+      await this.on('channelJoined', (channel:any) => { console.log(channel) })
     }
 
     await this.socket.send(command).catch(console.error)

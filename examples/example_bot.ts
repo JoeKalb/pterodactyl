@@ -8,6 +8,7 @@ import {
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const opts = {
+    client_id:config().TWITCH_CLIENT_ID,
     password:config().TWITCH_PASSWORD,
     username:config().TWITCH_USERNAME,
     channels:[
@@ -17,15 +18,16 @@ const opts = {
         'lunalyrik',
         'hapabott',
         'larkonline',
-        'palmbee'
+        'palmbee',
+        'amouranth',
+        'thabuttress'
     ]
 }
 const client = new Client(opts)
 
 let handleMessage = (message: Message) => {
-    //console.log(message)
     if(message.text === '!ping')
-        message.reply("pong")
+        message.reply("hapaboD ")
     else if(message.text === '!join' && message.channel === '#botfish5'){
         client.join(message.username)
     }

@@ -138,13 +138,25 @@ const events = {
 
         usernotice['username'] = usernotice['login']
         usernotice['channel'] = tempArrayMessage[1]
-            .substring(tempArrayMessage[1].indexOf("#")).trim()
+            .substring(tempArrayMessage[1].indexOf('#')).trim()
 
         if(tempArrayMessage.length === 3)
             usernotice['message'] = tempArrayMessage[2].trim()
 
         return usernotice
     }, 
+
+    userstate:(rawMessage:string):{} => {
+        let userstate:{[index:string]:string} = {}
+
+        const tempArrayUserstate = rawMessage.split(' :')
+
+        userstate = { ..._.userinfo(tempArrayUserstate[0]) }
+        userstate['channel'] = tempArrayUserstate[1]
+            .substring(tempArrayUserstate[1].indexOf('#')).trim()
+        
+        return userstate
+    },
 
     whisper:(client:Client, rawMessage:string):Whisper => {
         let message:{[index:string]:any} = {}

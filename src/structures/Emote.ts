@@ -1,13 +1,18 @@
 export class Emote{
     public emote_id!:string
-    public characters!:any[]
+    public characters?:any[]
 
     constructor(emoteString:string){
-        const colonIndex = emoteString.indexOf(':')
-        this.emote_id = emoteString
+        if(emoteString.match(':')){
+            const colonIndex = emoteString.indexOf(':')
+            this.emote_id = emoteString
             .substring(0, colonIndex)
-        this.characters = emoteString
-            .substring(colonIndex+1).split(',')
+            this.characters = emoteString
+                .substring(colonIndex+1).split(',')
+        }
+        else
+            this.emote_id = emoteString
+        
     }
 
     public getEmoteURL(size="1.0"):string{
