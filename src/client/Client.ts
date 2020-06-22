@@ -307,7 +307,7 @@ export class Client extends Emitter{
         this.emit('join', events.join(this, rawMessage))
         break
       case 'HOSTTARGET':
-        console.log(`HOSTTARGET: ${rawMessage}`)
+        this.emit('hosting', events.hostTarget(this, rawMessage))
         break
       case 'NOTICE':
         this.emit('notice', events.notice(rawMessage))
@@ -383,15 +383,19 @@ export class Client extends Emitter{
         notice = events.subgift(this, usernotice)
         break
       case 'anonsubgift':
+        notice = events.subgift(this, usernotice)
         break
       case 'submysterygift':
+        notice = events.submysterygift(this, usernotice)
         break
       case 'giftpaidupgrade':
+        notice = events.giftPaidUpgrade(this, usernotice)
         break
       case 'rewardgift':
         notice = events.rewardGift(this, usernotice)
         break
       case 'anongiftpaidupgrade':
+        notice = events.giftPaidUpgrade(this, usernotice)
         break
       case 'raid':
         notice = events.raid(this, usernotice)
@@ -399,13 +403,16 @@ export class Client extends Emitter{
       case 'unraid':
         break
       case 'ritual':
+        notice = events.ritual(this, usernotice)
         break
       case 'bitsbadgetier':
+        notice = events.bitBadgeTier(this, usernotice)
         break
       default:
-        console.log(usernotice)
+        console.log(`Case not found for usernotice: ${usernotice}`)
     }
-    console.log(usernotice, notice)
+    if(notice === {})
+      console.log(usernotice, notice)
     this.emit(usernotice['msg-id'], notice)
   }
 }

@@ -1,5 +1,9 @@
 import _ from "./utils.ts";
 import { Client } from "./Client.ts";
+
+import { Bitbadgetier } from "../structures/Bitbadgettier.ts";
+import { Giftpaidupgrade } from "../structures/Giftpaidupgrade.ts";
+import { Host } from "../structures/Host.ts";
 import { Message } from "../structures/Message.ts";
 import { Notice } from "../structures/Notice.ts";
 import { Raid } from "../structures/Raid.ts";
@@ -9,13 +13,17 @@ import { Sub } from "../structures/Sub.ts";
 import { Subgift } from "../structures/Subgift.ts";
 import { Submysterygift } from "../structures/Submysterygift.ts";
 import { User } from "../structures/User.ts";
-import { Whisper } from "../../mod.ts";
+import { Whisper, Ritual } from "../../mod.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {
         let channelJoined:{[index:string]:any} = {}
         
         return channelJoined
+    },
+
+    bitBadgeTier:(client:Client, usernotice:{[index:string]:any}):Bitbadgetier => {
+        return new Bitbadgetier(client, usernotice)
     },
 
     chatMessage:(client:Client, rawMessage:string):{} => {
@@ -70,6 +78,14 @@ const events = {
         return messageDeleted
     },
 
+    giftPaidUpgrade:(client:Client, usernotice:{[index:string]:any}):Giftpaidupgrade => {
+        return new Giftpaidupgrade(client, usernotice)
+    },
+
+    hostTarget:(client:Client, rawMessage:string):Host => {
+        return new Host(client, _.hostTarget(rawMessage))
+    },
+
     join:(client:Client, rawMessage:string):User => {
         return new User(client, _.joinOrPart(rawMessage))
     },
@@ -102,6 +118,10 @@ const events = {
 
     rewardGift:(client:Client, usernotice:{[index:string]:any}):Rewardgift => {
         return new Rewardgift(client, usernotice)
+    },
+
+    ritual:(client:Client, usernotice:{[index:string]:any}):Ritual => {
+        return new Ritual(client, usernotice)
     },
 
     roomstate:(rawMessage:string):Roomstate => {

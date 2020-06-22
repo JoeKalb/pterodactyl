@@ -23,6 +23,14 @@ const _ =  {
         }) */
     },
 
+    hostTarget(rawMessage:string):{channel:string, host:string} {
+        const tempHostArray = rawMessage.split(' :')
+        return {
+            channel:tempHostArray[0].substring(tempHostArray[0].indexOf('#')),
+            host:this.channel(tempHostArray[1].substring(0, tempHostArray[1].indexOf(' ')))
+        }
+    },
+
     joinOrPart(rawMessage:string):{username:string, channel:string} {
         return {
             username: rawMessage.substring(1, rawMessage.indexOf('!')),

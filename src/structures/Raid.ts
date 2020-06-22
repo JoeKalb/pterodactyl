@@ -12,4 +12,28 @@ export class Raid extends Base{
         this.msg_param_login = params['msg-param-login']
         this.msg_param_viewerCount = params['msg-param-viewerCount']
     }
+
+    public followerOnly(minutes=1):void{
+        this.client.followers(this.channel, minutes)
+    }
+
+    public followersOff():void {
+        this.client.followersOff(this.channel)
+    }
+
+    public r9k():void {
+        this.client.r9k(this.channel)
+    }
+
+    public r9kOff():void {
+        this.client.r9kOff(this.channel)
+    }
+
+    public subscriberOnly():void {
+        this.client.subscribersOnly(this.channel)
+    }
+
+    public subscriberOnlyOff():void {
+        this.client.subscribersOnlyOff(this.channel)
+    }
 }
