@@ -401,6 +401,7 @@ export class Client extends Emitter{
         notice = events.raid(this, usernotice)
         break
       case 'unraid':
+        notice = events.unraid(this, usernotice)
         break
       case 'ritual':
         notice = events.ritual(this, usernotice)
@@ -409,7 +410,8 @@ export class Client extends Emitter{
         notice = events.bitBadgeTier(this, usernotice)
         break
       default:
-        console.log(`Case not found for usernotice: ${usernotice}`)
+        console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
+        console.log(usernotice)
     }
     if(notice === {})
       console.log(usernotice, notice)

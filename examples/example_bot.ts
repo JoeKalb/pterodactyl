@@ -20,7 +20,10 @@ const opts = {
         'larkonline',
         'palmbee',
         'amouranth',
-        'thabuttress'
+        'thabuttress',
+        'thethingssheplays',
+        'summit1g',
+        'timthetatman'
     ]
 }
 const client = new Client(opts)

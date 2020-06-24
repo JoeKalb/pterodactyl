@@ -12,6 +12,7 @@ import { Roomstate } from "../structures/Roomstate.ts";
 import { Sub } from "../structures/Sub.ts";
 import { Subgift } from "../structures/Subgift.ts";
 import { Submysterygift } from "../structures/Submysterygift.ts";
+import { Unraid } from "../structures/Unraid.ts";
 import { User } from "../structures/User.ts";
 import { Whisper, Ritual } from "../../mod.ts";
 
@@ -147,6 +148,10 @@ const events = {
 
     submysterygift:(client:Client, usernotice:{[index:string]:any}):Submysterygift => {
         return new Submysterygift(client, usernotice)
+    },
+
+    unraid:(client:Client, usernotice:{[index:string]:any}):Unraid => {
+        return new Unraid(client, usernotice)
     },
 
     usernotice:(rawMessage:string):{} => {
