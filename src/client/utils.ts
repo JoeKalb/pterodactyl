@@ -85,6 +85,10 @@ const _ =  {
                 value = value.replace(/\\s/g, " ")
             else if (key === 'msg-param-origin-id')
                 value = value.replace(/\\s/g, "-")
+            else if (value === "true")
+                value = true
+            else if (value === "false")
+                value = false
             
             userinfo[key] = value
         })
@@ -106,6 +110,7 @@ let isNumberType = (key:string):boolean => {
         || (key === 'msg-param-streak-months')
         || (key === 'msg-param-viewerCount')
         || (key === 'msg-param-selected-count')
+        || (key === 'msg-param-sub-benefit-end-month')
         || (key === 'msg-param-total-reward-count')
         || (key === 'msg-param-trigger-amount')
         || (key === 'bits')

@@ -2,10 +2,13 @@ import _ from "./utils.ts";
 import { Client } from "./Client.ts";
 
 import { Bitbadgetier } from "../structures/Bitbadgettier.ts";
+import { Communitypayforward } from "../structures/Communitypayforward.ts";
+import { Extendsub } from "../structures/Extendsub.ts";
 import { Giftpaidupgrade } from "../structures/Giftpaidupgrade.ts";
 import { Host } from "../structures/Host.ts";
 import { Message } from "../structures/Message.ts";
 import { Notice } from "../structures/Notice.ts";
+import { Paidprimeupgrade } from "../structures/Paidprimeupgrade.ts";
 import { Raid } from "../structures/Raid.ts";
 import { Rewardgift } from "../structures/Rewardgift.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
@@ -79,6 +82,14 @@ const events = {
         return messageDeleted
     },
 
+    communityPayForward:(client:Client, usernotice:{[index:string]:any}):Communitypayforward => {
+        return new Communitypayforward(client, usernotice)
+    },
+
+    extendSub:(client:Client, usernotice:{[index:string]:any}):Extendsub => {
+        return new Extendsub(client, usernotice)
+    },
+
     giftPaidUpgrade:(client:Client, usernotice:{[index:string]:any}):Giftpaidupgrade => {
         return new Giftpaidupgrade(client, usernotice)
     },
@@ -103,6 +114,10 @@ const events = {
         tempNoticeObject['message'] = tempArrayNotice[2].trim()
 
         return new Notice(tempNoticeObject)
+    },
+
+    paidPrimeUpgrade:(client:Client, usernotice:{[index:string]:any}):Paidprimeupgrade => {
+        return new Paidprimeupgrade(client, usernotice)
     },
 
     part:(client:Client, rawMessage:string):User => {

@@ -397,6 +397,15 @@ export class Client extends Emitter{
       case 'anongiftpaidupgrade':
         notice = events.giftPaidUpgrade(this, usernotice)
         break
+      case 'communitypayforward':
+        notice = events.communityPayForward(this, usernotice)
+        break
+      case 'extendsub':
+        notice = events.extendSub(this, usernotice)
+        break
+      case 'primepaidupgrade':
+        notice = events.paidPrimeUpgrade(this, usernotice)
+        break
       case 'raid':
         notice = events.raid(this, usernotice)
         break
@@ -413,8 +422,6 @@ export class Client extends Emitter{
         console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
         console.log(usernotice)
     }
-    if(notice === {})
-      console.log(usernotice, notice)
     this.emit(usernotice['msg-id'], notice)
   }
 }
