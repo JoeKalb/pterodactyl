@@ -45,7 +45,7 @@ let handleMessage = (message: Message) => {
 }
 
 let handleNotice = (notice: Notice) => {
-    console.log(notice)
+    //console.log(notice)
 }
 
 let handleWhisper = (whisper: Whisper) => {

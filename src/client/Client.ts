@@ -326,8 +326,10 @@ export class Client extends Emitter{
         break
       case 'PRIVMSG':
         let newMessage = events.chatMessage(this, rawMessage)
-        if(newMessage.hasOwnProperty('bits'))
+        if(newMessage.hasOwnProperty('bits')){
+          console.log(rawMessage)
           this.emit('cheer', newMessage)
+        }
         else
           this.emit('chat', newMessage)
         break
@@ -416,12 +418,24 @@ export class Client extends Emitter{
         notice = events.ritual(this, usernotice)
         break
       case 'bitsbadgetier':
+        console.log(usernotice)
         notice = events.bitBadgeTier(this, usernotice)
         break
       default:
         console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
         console.log(usernotice)
     }
+    if(usernotice['msg-id'] !== "resub" 
+      && usernotice['msg-id'] !== "rewardgift"
+      && usernotice['msg-id'] !== "sub"
+      && usernotice['msg-id'] !== "subgift"
+      && usernotice['msg-id'] !== "submysterygift"
+      && usernotice['msg-id'] !== "primepaidupgrade"
+      && usernotice['msg-id'] !== "extendsub"
+      && usernotice['msg-id'] !== "communitypayforward"
+      && usernotice['msg-id'] !== "giftpaidupgrade"
+      && usernotice['msg-id'] !== "raid")
+      console.log(usernotice)
     this.emit(usernotice['msg-id'], notice)
   }
 }

@@ -21,6 +21,7 @@ import { Whisper, Ritual } from "../../mod.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {
+        console.log(rawMessage)
         let channelJoined:{[index:string]:any} = {}
         
         return channelJoined
@@ -30,7 +31,7 @@ const events = {
         return new Bitbadgetier(client, usernotice)
     },
 
-    chatMessage:(client:Client, rawMessage:string):{} => {
+    chatMessage:(client:Client, rawMessage:string):Message => {
         let message:{[index:string]:any} = {}
 
         let tempArrayMessage = rawMessage.split(' :')
