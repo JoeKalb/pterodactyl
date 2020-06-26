@@ -154,7 +154,7 @@ const events = {
         let roomstate:{[index:string]:any} = {}
 
         let tempArrayRoomstate = rawMessage.split(' :')
-
+        
         roomstate = { ..._.roomstateDetails(tempArrayRoomstate[0]) }
 
         roomstate['channel'] = tempArrayRoomstate[1]

@@ -10,16 +10,35 @@ Deno.test("utils - Channel Formatting - incorrectly formatted", () => {
     assertEquals(_.channel("LYRIK"), "#lyrik")
 })
 
-Deno.test("utils - emoteBreakdown", () => {
-    assertEquals(true, true)
+Deno.test("utils - emoteBreakdown - empty string", () => {
+    assertEquals(
+        _.emoteBreakdown(""), 
+        [])
 })
 
-Deno.test("utils hostTarget", () => {
-    assertEquals(true, true)
+Deno.test("utils - emoteBreadown - non-empty string", () => {
+    assertEquals(
+        _.emoteBreakdown("300543100:9-15/302373508:0-7,17-24"),
+        ["300543100:9-15","302373508:0-7,17-24"]
+    )
+})
+
+Deno.test("utils - hostTarget", () => {
+    assertEquals(
+        _.hostTarget(":tmi.twitch.tv HOSTTARGET #joefish5 :thethingssheplays -"), 
+        {
+            channel:"#joefish5",
+            host:"#thethingssheplays"
+        })
 })
 
 Deno.test("utils - joinOrPart", () => {
-    assertEquals(true, true)
+    assertEquals(
+        _.joinOrPart(":botfish5!botfish5@botfish5.tmi.twitch.tv JOIN #ashm0nster"), 
+        {
+            username:"botfish5",
+            channel:"#ashm0nster"
+        })
 })
 
 Deno.test("utils - messageType - 001", () => {
@@ -58,11 +77,39 @@ Deno.test("utils - messageType - USERSTATE", () => {
 })
 
 Deno.test("utils - roomstateDetails", () => {
-    assertEquals(true, true)
+    assertEquals(
+        _.roomstateDetails("@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=112721305;slow=0;subs-only=0"), 
+        {
+            ['emote-only']:false,
+            ['followers-only']:-1,
+            r9k:false,
+            rituals:"0",
+            ['room-id']:"112721305",
+            slow:0,
+            ['subs-only']:false
+        })
 })
 
 Deno.test("utils - userinfo", () => {
-    assertEquals(true, true)
+    assertEquals(
+        _.userinfo("@badge-info=subscriber/5;badges=subscriber/3,premium/1;client-nonce=006615db47bc2a54e98ce6b8c7bbc8af;color=#0000FF;display-name=drklucavi;emotes=;flags=;id=a22de78b-f2f4-48c3-b101-54aadb33e9d8;mod=0;room-id=26490481;subscriber=1;tmi-sent-ts=1593204178756;turbo=0;user-id=27813818;user-type="), 
+        {
+            ['badge-info']:"subscriber/5",
+            badges:"subscriber/3,premium/1",
+            ['client-nonce']:"006615db47bc2a54e98ce6b8c7bbc8af",
+            color:"#0000FF",
+            ['display-name']:"drklucavi",
+            emotes:"",
+            flags:"",
+            id:"a22de78b-f2f4-48c3-b101-54aadb33e9d8",
+            mod:false,
+            ['room-id']:"26490481",
+            subscriber:true,
+            ['tmi-sent-ts']:"1593204178756",
+            turbo:false,
+            ['user-id']:"27813818",
+            ['user-type']:""
+        })
 })
 
 Deno.test("utils - username", () => {
