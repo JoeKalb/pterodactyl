@@ -12,6 +12,7 @@ import { Paidprimeupgrade } from "../structures/Paidprimeupgrade.ts";
 import { Raid } from "../structures/Raid.ts";
 import { Rewardgift } from "../structures/Rewardgift.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
+import { Standardpayforward } from "../structures/Standardpayforward.ts";
 import { Sub } from "../structures/Sub.ts";
 import { Subgift } from "../structures/Subgift.ts";
 import { Submysterygift } from "../structures/Submysterygift.ts";
@@ -53,9 +54,15 @@ const events = {
 
         let tempArrayMessage = rawMessage.split(' :')
 
-        // if banDurationTime is "" it will return -1 to show a permenant ban for the channel 
-        let [banDurationName, banDurationTime] = tempArrayMessage[0].substring(1).split('=')
-        timeoutOrBan[banDurationName] = (banDurationTime === "")? -1 : parseInt(banDurationTime)
+        tempArrayMessage[0].substring(1).split(';').forEach(e => {
+            let [key, value]:any = e.split('=')
+
+            // if banDurationTime is "" it will return -1 to show a permenant ban for the channel
+            if(key === "ban-duration")
+                value = (value === "") ? -1 :parseInt(value)
+
+            timeoutOrBan[key] = value
+        })
 
         timeoutOrBan['channel'] = tempArrayMessage[1]
             .substring(tempArrayMessage[1].indexOf('#'))
@@ -69,7 +76,7 @@ const events = {
 
         let tempArrayMessage = rawMessage.split(' :')
 
-        let messageDetails = tempArrayMessage[0].split(';')
+        let messageDetails = tempArrayMessage[0].substring(1).split(';')
         messageDetails.forEach(e => {
             let [key, value] = e.split('=')
             messageDeleted[key] = value
@@ -79,6 +86,8 @@ const events = {
             .substring(tempArrayMessage[1].indexOf('#'))
 
         messageDeleted['message'] = tempArrayMessage[2].trim()
+
+        messageDeleted['username'] = messageDeleted['login']
 
         return messageDeleted
     },
@@ -154,6 +163,10 @@ const events = {
         return new Roomstate(roomstate)
     },
 
+    standardPayForward:(client:Client, usernotice:{[index:string]:any}):Standardpayforward => {
+        return new Standardpayforward(client, usernotice)
+    },
+
     sub:(client:Client, usernotice:{[index:string]:any}):Sub => {
         return new Sub(client, usernotice)
     },
@@ -183,6 +196,10 @@ const events = {
 
         if(tempArrayMessage.length === 3)
             usernotice['message'] = tempArrayMessage[2].trim()
+
+        if(usernotice['msg-id'] === "bitsbadgetier"
+            || usernotice['msg-id'] === "unraid")
+            console.log(rawMessage)
 
         return usernotice
     }, 

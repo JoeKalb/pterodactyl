@@ -10,6 +10,7 @@ export { Notice } from "./src/structures/Notice.ts";
 export { Paidprimeupgrade } from "./src/structures/Paidprimeupgrade.ts";
 export { Raid } from "./src/structures/Raid.ts";
 export { Ritual } from "./src/structures/Ritual.ts";
+export { Standardpayforward } from "./src/structures/Standardpayforward.ts";
 export { Sub } from "./src/structures/Sub.ts";
 export { Subgift } from "./src/structures/Subgift.ts";
 export { Unraid } from "./src/structures/Unraid.ts";

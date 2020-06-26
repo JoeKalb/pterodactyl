@@ -334,6 +334,8 @@ export class Client extends Emitter{
           this.emit('chat', newMessage)
         break
       case 'USERNOTICE':
+        if(rawMessage.match('unraid') || rawMessage.match('bitsbadgetier'))
+          console.log(rawMessage)
         this.usernoticeHandler(events.usernotice(rawMessage))
         break
       case 'USERSTATE':
@@ -418,8 +420,10 @@ export class Client extends Emitter{
         notice = events.ritual(this, usernotice)
         break
       case 'bitsbadgetier':
-        console.log(usernotice)
         notice = events.bitBadgeTier(this, usernotice)
+        break
+      case 'standardpayforward':
+        notice = events.standardPayForward(this, usernotice)
         break
       default:
         console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
@@ -434,7 +438,9 @@ export class Client extends Emitter{
       && usernotice['msg-id'] !== "extendsub"
       && usernotice['msg-id'] !== "communitypayforward"
       && usernotice['msg-id'] !== "giftpaidupgrade"
-      && usernotice['msg-id'] !== "raid")
+      && usernotice['msg-id'] !== "raid"
+      && usernotice['msg-id'] !== "ritual"
+      && usernotice['msg-id'] !== "standardpayforward")
       console.log(usernotice)
     this.emit(usernotice['msg-id'], notice)
   }

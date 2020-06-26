@@ -6,6 +6,7 @@ import {
     Whisper
     } from "../mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { Roomstate } from "../src/structures/Roomstate.ts";
 
 const opts = {
     client_id:config().TWITCH_CLIENT_ID,
@@ -30,7 +31,7 @@ const client = new Client(opts)
 
 let handleMessage = (message: Message) => {
     if(message.text === '!ping')
-        message.reply("hapaboD ")
+        message.reply(`PONG`)
     else if(message.text === '!join' && message.channel === '#botfish5'){
         client.join(message.username)
     }
@@ -48,6 +49,10 @@ let handleNotice = (notice: Notice) => {
     //console.log(notice)
 }
 
+let handleRoomState = (info:Roomstate) => {
+    //console.log(info)
+}
+
 let handleWhisper = (whisper: Whisper) => {
     if(whisper.username === 'joefish5' && whisper.hasEmotes())
         whisper.send('hallo!')
@@ -55,6 +60,7 @@ let handleWhisper = (whisper: Whisper) => {
 
 client.on('chat', handleMessage)
 client.on('notice', handleNotice)
+client.on('roomState', handleRoomState)
 client.on('whisper', handleWhisper)
 //client.on('resub', (info: {[index:string]:any}) => { console.log(info) })
 

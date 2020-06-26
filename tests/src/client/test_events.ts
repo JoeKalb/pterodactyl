@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 import { Client } from "../../../src/client/Client.ts";
 import events from "../../../src/client/events.ts";
+import { Userstate } from "../../../src/structures/Userstate.ts";
 
 const opts = {
     client_id:'',
@@ -31,11 +32,30 @@ Deno.test("Event - chatMessage", () => {
 })
 
 Deno.test("Event - clearChat", () => {
-    assertEquals(true, true) 
+    assertEquals(
+        events.clearChat("@ban-duration=1;room-id=36769016;target-user-id=48234333;tmi-sent-ts=1593104710052 :tmi.twitch.tv CLEARCHAT #timthetatman :toghill97"), 
+        { 
+            ['ban-duration']: 1,
+            ['room-id']:"36769016",
+            ['target-user-id']:"48234333",
+            ['tmi-sent-ts']:"1593104710052",
+             channel: "#timthetatman", 
+             username: "toghill97" 
+        }) 
 })
 
 Deno.test("Event - clearMessage", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.clearMessage("@login=a_elmiusrati;room-id=;target-msg-id=59529f16-2c6d-4508-af15-5eef4034f229;tmi-sent-ts=1593107423614 :tmi.twitch.tv CLEARMSG #amouranth :She looks delicious"), 
+        {
+            login:"a_elmiusrati",
+            ['room-id']:"",
+            ['target-msg-id']:"59529f16-2c6d-4508-af15-5eef4034f229",
+            ['tmi-sent-ts']:"1593107423614",
+            channel:"#amouranth",
+            message:"She looks delicious",
+            username:"a_elmiusrati"
+        })
 })
 
 Deno.test("Event - communityPayForward", () => {
@@ -123,7 +143,9 @@ Deno.test("Event - giftPaidUpgrade", () => {
 })
 
 Deno.test("Event - hostTarget", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.hostTarget(client, ":tmi.twitch.tv HOSTTARGET #thabuttress :thethingssheplays -").channel, 
+        "#thabuttress")
 })
 
 Deno.test("Event - join", () => {
@@ -135,7 +157,9 @@ Deno.test("Event - join", () => {
 })
 
 Deno.test("Event - notice", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.notice("@msg-id=host_on :tmi.twitch.tv NOTICE #thabuttress :Now hosting TheThingsShePlays.").msg_id, 
+        "host_on")
 })
 
 Deno.test("Event - paidPrimeUpgrade", () => {
@@ -262,11 +286,47 @@ Deno.test("Event - rewardGift", () => {
 })
 
 Deno.test("Event - ritual", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.ritual(client, events.usernotice("@badge-info=;badges=;color=;display-name=SevenTest1;emotes=30259:0-6;id=37feed0f-b9c7-4c3a-b475-21c6c6d21c3d;login=seventest1;mod=0;msg-id=ritual;msg-param-ritual-name=new_chatter;room-id=6316121;subscriber=0;system-msg=Seventoes\sis\snew\shere!;tmi-sent-ts=1508363903826;turbo=0;user-id=131260580;user-type= :tmi.twitch.tv USERNOTICE #seventoes :HeyGuys")).msg_param_ritual_name, 
+        "new_chatter")
 })
 
 Deno.test("Event - roomstate", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.roomstate("@emote-only=0;followers-only=5;r9k=0;rituals=0;room-id=36769016;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #timthetatman").channel, 
+        "#timthetatman")
+})
+
+Deno.test("Event - standardPayForward", () => {
+    assertEquals(
+        events.standardPayForward(client, {
+            ['badge-info']: "subscriber/1",
+            badges: "subscriber/0",
+            color: "#0000FF",
+            ['display-name']: "timprim27",
+            emotes: "",
+            flags: "",
+            id: "b42ed73f-6374-4d76-9ee2-eec8ae09c4bc",
+            login: "timprim27",
+            mod: false,
+            ['msg-id']: "standardpayforward",
+            ['msg-param-prior-gifter-anonymous']: false,
+            ['msg-param-prior-gifter-display-name']: "thebergalicious",
+            ['msg-param-prior-gifter-id']: "243233866",
+            ['msg-param-prior-gifter-user-name']: "thebergalicious",
+            ['msg-param-recipient-display-name']: "KORPPIWORPPI",
+            ['msg-param-recipient-id']: "57944699",
+            ['msg-param-recipient-user-name']: "korppiworppi",
+            ['room-id']: "36769016",
+            subscriber: true,
+            ['system-msg']: "timprim27 is paying forward the Gift they got from thebergalicious to KORPPIWORPPI!",      
+            ['tmi-sent-ts']: "1593117357490",
+            ['user-id']: "427811112",
+            ['user-type']: "",
+            username: "timprim27",
+            channel: "#timthetatman"
+          }).msg_param_prior_gifter_id,
+        "243233866")
 })
 
 Deno.test("Event - sub", () => {
@@ -398,7 +458,9 @@ Deno.test("Event - usernotice", () => {
 })
 
 Deno.test("Event - userstate", () => {
-    assertEquals(true, true)
+    assertEquals(
+        new Userstate('', events.userstate("@badge-info=subscriber/8;badges=moderator/1,subscriber/3006;color=#FF69B4;display-name=BotFish5;emote-sets=0,24223,49906,49907,96952,1261174,300548760,488737509,537206155;mod=1;subscriber=1;user-type=mod :tmi.twitch.tv USERSTATE #thabuttress")).subscriber, 
+        true)
 })
 
 Deno.test("Event - whisper", () => {

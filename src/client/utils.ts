@@ -1,5 +1,3 @@
-
-
 const _ =  {
     channel(channel: string):string{
         channel = channel.toLocaleLowerCase().trim()
