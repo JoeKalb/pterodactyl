@@ -48,7 +48,7 @@ Deno.test("Command - deleteMessage", () => {
     )
 })
 
-Deno.test("Command -emoteOnly", () => {
+Deno.test("Command - emoteOnly", () => {
     assertEquals(commands.emoteOnly("#thethingssheplays"), "PRIVMSG #thethingssheplays :/emoteonly")
 })
 
