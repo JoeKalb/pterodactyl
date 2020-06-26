@@ -39,7 +39,7 @@ export class Client extends Emitter{
   /* 
     Public methods available to the client
   */
-  public async connect(): Promise<void> {
+  public async connect():Promise<void> {
     try{
       this.socket = await connectWebSocket("wss://irc-ws.chat.twitch.tv:443")
       await this.socket.send(`PASS ${this.password}`).catch(console.error)
@@ -75,14 +75,14 @@ export class Client extends Emitter{
     }
   }
 
-  public async disconnect(): Promise<void>{
+  public async disconnect():Promise<void> {
     if(!this.socket.isClosed){
       this.connected = false
       await this.socket.close(1000).catch(console.error)
     }
   }
 
-  private async reconnect(): Promise<void>{
+  private async reconnect():Promise<void> {
     while(!this.connected){
       (this.interval === 0) ? this.interval = 1 : this.interval *=2
       setTimeout(() => {
@@ -93,78 +93,78 @@ export class Client extends Emitter{
     this.interval = 0
   }
 
-  public ban(channel:string, username:string, reason=""): void{
+  public ban(channel:string, username:string, reason=""):void {
     this.sendCommand(channel, commands.ban(channel, username, reason))
   }
 
-  public chat(channel:string, message:string): void{
+  public chat(channel:string, message:string):void {
     this.sendCommand(channel, commands.chat(channel, message))
   }
 
-  public clearChat(channel:string): void{
+  public clearChat(channel:string):void {
     this.sendCommand(channel, commands.clear(channel))
   }
 
-  public color(color:string): void{
+  public color(color:string):void {
     this.sendCommand(this.channels[0],commands.color(color))
   }
 
-  public commercial(channel:string, seconds:number): void {
+  public commercial(channel:string, seconds:number):void {
     this.sendCommand(channel, commands.commercial(channel, seconds))
   }
 
-  public deleteMessage(channel:string, messageID:string): void {
+  public deleteMessage(channel:string, messageID:string):void {
     this.sendCommand(channel, commands.deleteMessage(channel, messageID))
   }
 
-  public emoteOnly(channel:string): void {
+  public emoteOnly(channel:string):void {
     this.sendCommand(channel, commands.emoteOnly(channel))
   }
 
-  public emoteOnlyOff(channel:string): void {
+  public emoteOnlyOff(channel:string):void {
     this.sendCommand(channel, commands.emoteOnlyOff(channel))
   }
 
-  public followers(channel:string, minutes:number): void {
+  public followers(channel:string, minutes:number):void {
     this.sendCommand(channel, commands.followers(channel, minutes))
   }
 
-  public followersOff(channel:string): void {
+  public followersOff(channel:string):void {
     this.sendCommand(channel, commands.followersOff(channel))
   }
 
-  public help(channel:string): void {
+  public help(channel:string):void {
     this.sendCommand(channel, commands.help(channel))
   }
 
-  public host(channel:string, targetChannel:string): void {
+  public host(channel:string, targetChannel:string):void {
     this.sendCommand(channel, commands.host(channel, targetChannel))
   }
 
-  public async join(channel: string): Promise<void>{
+  public async join(channel: string):Promise<void> {
     let index = this.channels.indexOf(channel)
     channel = _.channel(channel)
     this.channels.splice(index, 1, channel)
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
 
-  public market(channel:string): void {
+  public market(channel:string):void {
     this.sendCommand(channel, commands.marker(channel))
   }
 
-  public me(channel:string, message:string): void {
+  public me(channel:string, message:string):void {
     this.sendCommand(channel, commands.me(channel, message))
   }
 
-  public mod(channel:string, username:string): void {
+  public mod(channel:string, username:string):void {
     this.sendCommand(channel, commands.mod(channel, username))
   }
 
-  public mods(channel:string): void {
+  public mods(channel:string):void {
     this.sendCommand(channel, commands.mods(channel))
   }
 
-  public async part(channel: string): Promise<void>{
+  public async part(channel: string):Promise<void> {
     if(!this.connected)
       return
 
@@ -179,27 +179,27 @@ export class Client extends Emitter{
       throw console.error(`Error: ${channel} has not been joined - cannot part`)
   }
 
-  public r9k(channel:string): void {
+  public r9k(channel:string):void {
     this.sendCommand(channel, commands.r9kbeta(channel))
   }
 
-  public r9kBeta(channel:string): void {
+  public r9kBeta(channel:string):void {
     this.r9k(channel)
   }
 
-  public r9kBetaOff(channel:string): void {
+  public r9kBetaOff(channel:string):void {
     this.r9kOff(channel)
   }
 
-  public r9kOff(channel:string): void {
+  public r9kOff(channel:string):void {
     this.sendCommand(channel, commands.r9kbetaOff(channel))
   }
 
-  public raid(channel:string, targetChannel:string): void {
+  public raid(channel:string, targetChannel:string):void {
     this.sendCommand(channel, commands.raid(channel, targetChannel))
   }
 
-  public async raw(message: string): Promise<void>{
+  public async raw(message: string):Promise<void> {
     if(this.connected)
       await this.socket.send(message).catch(console.error)
   }
@@ -208,61 +208,61 @@ export class Client extends Emitter{
     this.chat(channel, message)
   }
 
-  public slow(channel:string, seconds:number): void {
+  public slow(channel:string, seconds:number):void {
     this.sendCommand(channel, commands.slow(channel, seconds))
   }
 
-  public slowOff(channel:string): void {
+  public slowOff(channel:string):void {
     this.sendCommand(channel, commands.slowOff(channel))
   }
 
-  public subscribersOnly(channel:string): void {
+  public subscribersOnly(channel:string):void {
     this.sendCommand(channel, commands.subscribers(channel))
   }
 
-  public subscribersOnlyOff(channel:string): void {
+  public subscribersOnlyOff(channel:string):void {
     this.sendCommand(channel, commands.subscribersOff(channel))
   }
 
-  public timeout(channel:string, username:string, seconds:number, reason=""): void {
+  public timeout(channel:string, username:string, seconds:number, reason=""):void {
     this.sendCommand(channel, commands.timeout(channel, username, seconds, reason))
   }
 
-  public unban(channel:string, username:string): void {
+  public unban(channel:string, username:string):void {
     this.sendCommand(channel, commands.unban(channel, username))
   }
 
-  public unhost(channel:string): void {
+  public unhost(channel:string):void {
     this.sendCommand(channel, commands.unhost(channel))
   }
 
-  public unmod(channel:string, username:string): void {
+  public unmod(channel:string, username:string):void {
     this.sendCommand(channel, commands.unmod(channel, username))
   }
 
-  public unraid(channel:string): void {
+  public unraid(channel:string):void {
     this.sendCommand(channel, commands.unraid(channel))
   }
 
-  public untimeout(channel:string, username:string): void {
+  public untimeout(channel:string, username:string):void {
     this.sendCommand(channel, commands.untimeout(channel, username))
   }
 
-  public upvip(channel:string, username:string): void {
+  public upvip(channel:string, username:string):void {
     this.sendCommand(channel, commands.unvip(channel, username))
   }
 
-  public vips(channel:string): void {
+  public vips(channel:string):void {
     this.sendCommand(channel, commands.vips(channel))
   }
 
-  public async whisper(username:string, message:string):Promise<void>{
+  public async whisper(username:string, message:string):Promise<void> {
     if(this.connected)
       await this.socket.send(commands.whisper(username, message))
   }
 
   // Handles all incoming messages to determine what event to emit.
-  private async handleEvents(rawMessage: string): Promise<void>{
+  private async handleEvents(rawMessage: string):Promise<void> {
     const messageType = _.messageType(rawMessage)
     //console.log(messageType)
     //console.log(rawMessage)
@@ -351,7 +351,7 @@ export class Client extends Emitter{
     }
   }
 
-  private confirmChannelJoin(message:string):void{
+  private confirmChannelJoin(message:string):void {
     let [channel, username]:string[] = message
       .substring(message.indexOf('#')).trim().split(' ', 1)
 
@@ -359,7 +359,7 @@ export class Client extends Emitter{
       this.channels = [...this.channels, channel]
   }
 
-  private async sendCommand(channel:string, command:string): Promise<void> {
+  private async sendCommand(channel:string, command:string):Promise<void> {
     if(!this.connected){
       console.log(red('Client is currently not connected to twitch. Hint: client.connect()'))
       return
