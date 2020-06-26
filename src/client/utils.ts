@@ -9,7 +9,7 @@ const _ =  {
     },
 
     emoteBreakdown(emoteString:string):any[]{
-        if(emoteString === "" || emoteString === undefined) 
+        if(emoteString === undefined || emoteString === "") 
             return []
 
         return emoteString.split('/')
