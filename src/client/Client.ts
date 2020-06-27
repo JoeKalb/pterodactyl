@@ -440,7 +440,8 @@ export class Client extends Emitter{
       && usernotice['msg-id'] !== "giftpaidupgrade"
       && usernotice['msg-id'] !== "raid"
       && usernotice['msg-id'] !== "ritual"
-      && usernotice['msg-id'] !== "standardpayforward")
+      && usernotice['msg-id'] !== "standardpayforward"
+      && usernotice['msg-id'] !== "unraid")
       console.log(usernotice)
     this.emit(usernotice['msg-id'], notice)
   }

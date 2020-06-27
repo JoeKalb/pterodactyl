@@ -197,8 +197,7 @@ const events = {
         if(tempArrayMessage.length === 3)
             usernotice['message'] = tempArrayMessage[2].trim()
 
-        if(usernotice['msg-id'] === "bitsbadgetier"
-            || usernotice['msg-id'] === "unraid")
+        if(usernotice['msg-id'] === "bitsbadgetier")
             console.log(rawMessage)
 
         return usernotice

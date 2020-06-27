@@ -423,7 +423,28 @@ Deno.test("Event - submysterygift", () => {
 })
 
 Deno.test("Event - unraid", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.unraid(client, {
+            ['badge-info']: "subscriber/57",
+            badges: "broadcaster/1,subscriber/3048,sub-gifter/1000",
+            color: "#FF7F50",
+            ['display-name']: "littlesiha",
+            emotes: "",
+            flags: "",
+            id: "25e1204a-d970-491d-8301-ea3cd521bf38",
+            login: "littlesiha",
+            mod: false,
+            ['msg-id']: "unraid",
+            ['room-id']: "70801500",
+            subscriber: true,
+            ['system-msg']: "The raid has been canceled.",
+            ['tmi-sent-ts']: "1593300882216",
+            ['user-id']: "70801500",
+            ['user-type']: "",
+            username: "littlesiha",
+            channel: "#littlesiha"
+          }).msg_id, 
+        "unraid")
 })
 
 Deno.test("Event - usernotice", () => {
