@@ -13,6 +13,7 @@ export { Ritual } from "./src/structures/Ritual.ts";
 export { Standardpayforward } from "./src/structures/Standardpayforward.ts";
 export { Sub } from "./src/structures/Sub.ts";
 export { Subgift } from "./src/structures/Subgift.ts";
+export { Submysterygift } from "./src/structures/Submysterygift.ts";
 export { Unraid } from "./src/structures/Unraid.ts";
 export { User } from "./src/structures/User.ts";
 export { Whisper } from "./src/structures/Whisper.ts";

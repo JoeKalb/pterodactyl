@@ -9,6 +9,7 @@ export class Whisper{
     public display_name!:string
     public emotes:Emote[]
     public message_id!:number
+    public says!:string
     public text!:string
     public thread_id!:string
     public turbo!:boolean
@@ -25,6 +26,7 @@ export class Whisper{
             return new Emote(e)
         })
         this.message_id = params['message-id']
+        this.says = params['text']
         this.text = params['text']
         this.thread_id = params['thread-id']
         this.turbo = params['turbo']

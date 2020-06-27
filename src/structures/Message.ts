@@ -15,6 +15,7 @@ export class Message extends User {
     public id!:string
     public mod:boolean = false
     public room_id?:string
+    public says!:string
     public subscriber?:boolean
     public text!:string
     public tmi_sent_ts?:string
@@ -42,6 +43,7 @@ export class Message extends User {
         this.flags = params['flags']
         this.id = params['id']
         this.mod = params['mod']
+        this.says = params['text']
         this.subscriber = params['subscriber']
         this.text = params['text']
         this.tmi_sent_ts = params['tmi-sent-ts']

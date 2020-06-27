@@ -2,6 +2,9 @@ import {
     Client,
     Message,
     Notice,
+    Sub,
+    Subgift,
+    Submysterygift,
     User,
     Whisper
     } from "../mod.ts";
@@ -24,24 +27,38 @@ const opts = {
         'thabuttress',
         'thethingssheplays',
         'summit1g',
-        'timthetatman'
+        'timthetatman',
+        'larkonline',
+        'beyondthesummit',
+        'a_seagull',
+        'seekaysee',
+        'littlesiha',
+        'novaruu',
+        'mischacrossing',
+        'smashley',
+        'bittie',
+        'kaypikefashion',
+        'ducksauce',
+        'maryjleeee'
     ]
 }
 const client = new Client(opts)
 
 let handleMessage = (message: Message) => {
-    if(message.text === '!ping')
-        message.reply(`PONG`)
-    else if(message.text === '!join' && message.channel === '#botfish5'){
-        client.join(message.username)
-    }
-    else if(message.username === 'joefish5' && message.text === '!mods')
-        client.mods(message.channel)
-    else if (message.username === 'joefish5' && message.text === '!whisper')
-        message.whisper('This is a test!')
-    else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
-        let parse = message.text.split(' ')
-        client.chat(parse[1], 'hi im new!')
+    if(message.username === 'joefish5'){
+        if(message.text === '!ping')
+            message.reply(`PONG`)
+        else if(message.text === '!join' && message.channel === '#botfish5'){
+            client.join(message.username)
+        }
+        else if(message.username === 'joefish5' && message.text === '!mods')
+            client.mods(message.channel)
+        else if (message.username === 'joefish5' && message.text === '!whisper')
+            message.whisper('This is a test!')
+        else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
+            let parse = message.text.split(' ')
+            client.chat(parse[1], 'hi im new!')
+        }
     }
 }
 
@@ -62,6 +79,10 @@ client.on('chat', handleMessage)
 client.on('notice', handleNotice)
 client.on('roomState', handleRoomState)
 client.on('whisper', handleWhisper)
-//client.on('resub', (info: {[index:string]:any}) => { console.log(info) })
+
+/* client.on('resub', (resub:Sub) => {resub.send(`Hey LunaLyrik! ${resub.system_msg}`)})
+client.on('sub', (sub:Sub) => {sub.send(`Hey LunaLyrik! ${sub.system_msg}`)})
+client.on('submysterygift', (mysteryGift:Submysterygift) => {mysteryGift.send(`Hey LunaLyrik! ${mysteryGift.system_msg}`)})
+client.on('subgift', (subgift:Subgift) => {subgift.send(`Hey LunaLyrik! ${subgift.system_msg}`)}) */
 
 await client.connect()
