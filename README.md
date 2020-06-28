@@ -2,8 +2,7 @@
 
 Deno client for Twitch IRC chat.
 
-[![license](https://img.shields.io/github/license/JoeKalb/pterodactyl)] (LICENSE)
-
+![GitHub](https://img.shields.io/github/license/JoeKalb/pterodactyl)
 ## Getting Started
 
 ### Usage
