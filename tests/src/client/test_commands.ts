@@ -24,7 +24,7 @@ Deno.test("Command - clear", () => {
 })
 
 Deno.test("Command - color", () => {
-    assertEquals(commands.color("#fff"), "PRIVMSG #tmijs :/color #fff")
+    assertEquals(commands.color("#fff"), "PRIVMSG #twitch :/color #fff")
 })
 
 Deno.test("Command - commercial (less than 30)", () => {
@@ -195,5 +195,5 @@ Deno.test("Command - vips", () => {
 })
 
 Deno.test("Command - whisper", () => {
-    assertEquals(commands.whisper("MOONMOON", "hi dad"), "PRIVMSG #tmijs :/w moonmoon hi dad")
+    assertEquals(commands.whisper("MOONMOON", "hi dad"), "PRIVMSG #twitch :/w moonmoon hi dad")
 })

@@ -3,17 +3,17 @@ import {
   isWebSocketCloseEvent,
   WebSocket
 } from "https://deno.land/std/ws/mod.ts";
-import { Emitter } from "https://deno.land/x/event_kit/mod.ts";
 import { green, red } from "https://deno.land/std/fmt/colors.ts";
-//import { EventEmitter } from "https://deno.land/std/node/events.ts"; // using std EventEmitter works but has errors in the VScode extensions
+import { EventEmitter } from "https://deno.land/std/node/events.ts";
 
 import _ from "./utils.ts";
 import commands from "./commands.ts";
 import events from "./events.ts";
 
 import { Userstate } from "../structures/Userstate.ts";
+import { Notice } from "../../mod.ts";
 
-export class Client extends Emitter{
+export class Client extends EventEmitter{
   public socket!: WebSocket;
   public channels: string[] = []
 
@@ -36,9 +36,7 @@ export class Client extends Emitter{
     this.channels = opts.channels
   }
   
-  /* 
-    Public methods available to the client
-  */
+  /** Connect to the Twitch IRC. */
   public async connect():Promise<void> {
     try{
       this.socket = await connectWebSocket("wss://irc-ws.chat.twitch.tv:443")
@@ -52,7 +50,7 @@ export class Client extends Emitter{
         this.join(channel)
       }
 
-      const message = async (): Promise<void> => {
+      const message = async ():Promise<void> => {
         for await (const msg of this.socket){
           if(typeof msg === "string"){
             msg.trim().split('\n').forEach(e => { this.handleEvents(e) })
@@ -75,6 +73,7 @@ export class Client extends Emitter{
     }
   }
 
+  /** Disconnect from the Twitch IRC. */
   public async disconnect():Promise<void> {
     if(!this.socket.isClosed){
       this.connected = false
@@ -93,54 +92,62 @@ export class Client extends Emitter{
     this.interval = 0
   }
 
+  /** Ban a user from a channel. Requires mod permission. */
   public ban(channel:string, username:string, reason=""):void {
     this.sendCommand(channel, commands.ban(channel, username, reason))
   }
 
+  /** Send a message in a channel. */
   public chat(channel:string, message:string):void {
     this.sendCommand(channel, commands.chat(channel, message))
   }
 
+  /** Clear all the messages in a channel. Requires moderator permission. */
   public clearChat(channel:string):void {
     this.sendCommand(channel, commands.clear(channel))
   }
 
+  /** Change the color of your username. */
   public color(color:string):void {
     this.sendCommand(this.channels[0],commands.color(color))
   }
 
+  /** Run a commercial on a channel. Requires editor permission. */
   public commercial(channel:string, seconds:number):void {
     this.sendCommand(channel, commands.commercial(channel, seconds))
   }
 
+  /** Delete a single message in a chat. Requires moderator permission. */
   public deleteMessage(channel:string, messageID:string):void {
     this.sendCommand(channel, commands.deleteMessage(channel, messageID))
   }
 
+  /** Enable emote only mode. Requires moderator permission. */
   public emoteOnly(channel:string):void {
     this.sendCommand(channel, commands.emoteOnly(channel))
   }
 
+  /** Disable emote only mode. Requires moderator permission. */
   public emoteOnlyOff(channel:string):void {
     this.sendCommand(channel, commands.emoteOnlyOff(channel))
   }
 
+  /** Enable followers only mode. Requires moderator permission. */
   public followers(channel:string, minutes:number):void {
     this.sendCommand(channel, commands.followers(channel, minutes))
   }
 
+  /** Disable followers only mode. Requires moderator permission. */
   public followersOff(channel:string):void {
     this.sendCommand(channel, commands.followersOff(channel))
   }
 
-  public help(channel:string):void {
-    this.sendCommand(channel, commands.help(channel))
-  }
-
+  /** Select a channel to host. Requires editor permission. */
   public host(channel:string, targetChannel:string):void {
     this.sendCommand(channel, commands.host(channel, targetChannel))
   }
 
+  /** Join a channel. */
   public async join(channel: string):Promise<void> {
     let index = this.channels.indexOf(channel)
     channel = _.channel(channel)
@@ -148,22 +155,27 @@ export class Client extends Emitter{
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
 
-  public market(channel:string):void {
+  /** Add a marker to the broadcast VOD. Requires editor permission. */
+  public marker(channel:string):void {
     this.sendCommand(channel, commands.marker(channel))
   }
 
+  /** Send a message with the same color as your username. */
   public me(channel:string, message:string):void {
     this.sendCommand(channel, commands.me(channel, message))
   }
 
+  /** Give a user moderator permissions. Requires channel owership. */
   public mod(channel:string, username:string):void {
     this.sendCommand(channel, commands.mod(channel, username))
   }
 
+  /** Get the current list of moderators. The response will be found at client.on("notice", (info:Notice) => { info.message }) */
   public mods(channel:string):void {
     this.sendCommand(channel, commands.mods(channel))
   }
 
+  /** Leave a channel. */
   public async part(channel: string):Promise<void> {
     if(!this.connected)
       return
@@ -179,83 +191,103 @@ export class Client extends Emitter{
       throw console.error(`Error: ${channel} has not been joined - cannot part`)
   }
 
+  /** Enable r9kBeta. Requires moderator permission. */
   public r9k(channel:string):void {
     this.sendCommand(channel, commands.r9kbeta(channel))
   }
 
+  /** Enable r9kBeta. Requires moderator permission. */
   public r9kBeta(channel:string):void {
     this.r9k(channel)
   }
 
+  /** Disable r9kBeta. Requires moderator permission. */
   public r9kBetaOff(channel:string):void {
     this.r9kOff(channel)
   }
 
+  /** Disable r9kBeta. Requires moderator permission. */
   public r9kOff(channel:string):void {
     this.sendCommand(channel, commands.r9kbetaOff(channel))
   }
 
+  /** Raid a channel. Requires editor permission. */
   public raid(channel:string, targetChannel:string):void {
     this.sendCommand(channel, commands.raid(channel, targetChannel))
   }
 
+  /** Send a message that you format yourself. Example `PRIVMSG ${channel} :${message}` */
   public async raw(message: string):Promise<void> {
     if(this.connected)
       await this.socket.send(message).catch(console.error)
   }
 
+  /** Send a message in a channel. */
   public say(channel:string, message:string):void {
     this.chat(channel, message)
   }
 
+  /** Enalbe slow mode. Requires moderator permission. */
   public slow(channel:string, seconds:number):void {
     this.sendCommand(channel, commands.slow(channel, seconds))
   }
 
+  /** Disable slow mode. Requires moderator permission. */
   public slowOff(channel:string):void {
     this.sendCommand(channel, commands.slowOff(channel))
   }
 
+  /** Enable subscriber only mode. Requires moderator permission. */
   public subscribersOnly(channel:string):void {
     this.sendCommand(channel, commands.subscribers(channel))
   }
 
+  /** Disable subscriber only mode. Requires moderator permission. */
   public subscribersOnlyOff(channel:string):void {
     this.sendCommand(channel, commands.subscribersOff(channel))
   }
 
+  /** Timeout a specific user. Requires moderator permission. */
   public timeout(channel:string, username:string, seconds:number, reason=""):void {
     this.sendCommand(channel, commands.timeout(channel, username, seconds, reason))
   }
 
+  /** Unban a specific user. Requires moderator permission. */
   public unban(channel:string, username:string):void {
     this.sendCommand(channel, commands.unban(channel, username))
   }
 
+  /** Disable a host. Requires moderator permission. */
   public unhost(channel:string):void {
     this.sendCommand(channel, commands.unhost(channel))
   }
 
+  /** Remove moderator permissions from a specific user. Requires channel ownership. */
   public unmod(channel:string, username:string):void {
     this.sendCommand(channel, commands.unmod(channel, username))
   }
 
+  /** Disable a raid event. Requires editor permission. */
   public unraid(channel:string):void {
     this.sendCommand(channel, commands.unraid(channel))
   }
 
+  /** Remove a users timeout. Requires moderator permission. */
   public untimeout(channel:string, username:string):void {
     this.sendCommand(channel, commands.untimeout(channel, username))
   }
 
+  /** Remove vip status from a user. Requires channel ownership. */
   public upvip(channel:string, username:string):void {
     this.sendCommand(channel, commands.unvip(channel, username))
   }
 
+  /** Get the current list of a vips in a channel. The response will be found at client.on("notice", (info:Notice) => { info.message }) */
   public vips(channel:string):void {
     this.sendCommand(channel, commands.vips(channel))
   }
 
+  /** Send a whisper to a specific user. */
   public async whisper(username:string, message:string):Promise<void> {
     if(this.connected)
       await this.socket.send(commands.whisper(username, message))

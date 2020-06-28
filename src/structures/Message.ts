@@ -77,7 +77,7 @@ export class Message extends User {
         this.client.chat(this.channel, `@${this.display_name} ${message}`)
     }
 
-    public send(message:string):void {
+    public say(message:string):void {
         this.chat(message)
     }
 

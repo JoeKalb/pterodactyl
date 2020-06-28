@@ -25,7 +25,7 @@ const commands = {
     },
 
     color: (color:string):string => {
-        return `PRIVMSG #tmijs :/color ${color}`
+        return `PRIVMSG #twitch :/color ${color}`
     },
 
     commercial: (channel:string, seconds:number):string => {
@@ -161,7 +161,7 @@ const commands = {
 
     whisper: (username:string, message:string):string => {
         username = _.username(username)
-        return formatChannelCommand("#tmijs", `/w ${username} ${message}`)
+        return formatChannelCommand("#twitch", `/w ${username} ${message}`)
     }
 }
 

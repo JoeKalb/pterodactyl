@@ -17,14 +17,14 @@ const opts = {
     username:config().TWITCH_USERNAME,
     channels:[
         'joefish5',
-        'botfish5',
+        'thabuttress',
+/*         'botfish5',
         'ashm0nster',
         'lunalyrik',
         'hapabott',
         'larkonline',
         'palmbee',
         'amouranth',
-        'thabuttress',
         'thethingssheplays',
         'summit1g',
         'timthetatman',
@@ -50,7 +50,7 @@ const opts = {
         'curvyllama',
         'ms_jewel',
         'kruzadar',
-        'raelilblack'
+        'raelilblack' */
     ]
 }
 const client = new Client(opts)
@@ -68,6 +68,8 @@ let handleMessage = (message: Message) => {
         }
         else if(message.username === 'joefish5' && message.text === '!mods')
             client.mods(message.channel)
+        else if(message.username === 'joefish5' && message.text === '!vips')
+            client.vips(message.channel)
         else if (message.username === 'joefish5' && message.text === '!whisper')
             message.whisper('This is a test!')
         else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
@@ -87,7 +89,7 @@ let handleRoomState = (info:Roomstate) => {
 
 let handleWhisper = (whisper: Whisper) => {
     if(whisper.username === 'joefish5' && whisper.hasEmotes())
-        whisper.send('hallo!')
+        whisper.say('hallo!')
 }
 
 client.on('chat', handleMessage)

@@ -39,7 +39,7 @@ export class Whisper{
         return this.emotes.length > 0
     }
 
-    public send(message:string):void {
+    public say(message:string):void {
         this.client.whisper(this.username, message)
     }
 }

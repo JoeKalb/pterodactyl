@@ -8,11 +8,15 @@ Deno client for Twitch IRC chat.
 ### Usage
 
 * Must use [Deno v1.0.3](https://github.com/denoland/deno/releases/tag/v1.0.3) or higher.
+* If you don't plan on implementing your own OAuth interface you can get the token to authenticate your username [here](https://twitchapps.com/tmi/)
 
 ### Basic Ping Pong Example
 
 ```typescript
-import { Client } from "../mod.ts";
+import { 
+    Client,
+    Message
+    } from "../mod.ts";
 
 const opts = {
     password:'<Twitch OAuth>',
@@ -23,9 +27,9 @@ const opts = {
 }
 const client = new Client(opts)
 
-let handleMessage = (message: {[index:string]:any}) => {
-    if(message.text === '!ping')
-        client.chat(message.channel, "pong")
+let handleMessage = (message:Message) => {
+    if(message.says === '!ping')
+        message.reply('pong')
 }
 
 client.on('chatMessage', handleMessage)
@@ -37,8 +41,7 @@ await client.connect()
 
 Contributors names and contact info
 
-ex. Joseph Kalb 
-ex. [@joefishplays](https://twitter.com/joefishplays)
+* [@joefishplays](https://twitter.com/joefishplays)
 
 ## Version History
 
