@@ -49,19 +49,13 @@ const opts = {
         'podgie',
         'curvyllama',
         'ms_jewel',
-        'kruzadar'
+        'kruzadar',
+        'raelilblack'
     ]
 }
 const client = new Client(opts)
 
-let messages = 0
-
-setInterval(() => {
-    console.log(`Messages Handled: ${messages}`)
-},10 * 1000)
-
 let handleMessage = (message: Message) => {
-    ++messages
 
     if(message.says.match(/botfish5/g))
         console.log(message.says)
@@ -100,10 +94,5 @@ client.on('chat', handleMessage)
 client.on('notice', handleNotice)
 client.on('roomState', handleRoomState)
 client.on('whisper', handleWhisper)
-
-/* client.on('resub', (resub:Sub) => {resub.send(`Hey LunaLyrik! ${resub.system_msg}`)})
-client.on('sub', (sub:Sub) => {sub.send(`Hey LunaLyrik! ${sub.system_msg}`)})
-client.on('submysterygift', (mysteryGift:Submysterygift) => {mysteryGift.send(`Hey LunaLyrik! ${mysteryGift.system_msg}`)})
-client.on('subgift', (subgift:Subgift) => {subgift.send(`Hey LunaLyrik! ${subgift.system_msg}`)}) */
 
 await client.connect()
