@@ -39,12 +39,33 @@ const opts = {
         'bittie',
         'kaypikefashion',
         'ducksauce',
-        'maryjleeee'
+        'maryjleeee',
+        'yuuie',
+        'qtcinderella',
+        'laceduplauren',
+        'skylias',
+        'lindsayelyse',
+        'claire',
+        'podgie',
+        'curvyllama',
+        'ms_jewel',
+        'kruzadar'
     ]
 }
 const client = new Client(opts)
 
+let messages = 0
+
+setInterval(() => {
+    console.log(`Messages Handled: ${messages}`)
+},10 * 1000)
+
 let handleMessage = (message: Message) => {
+    ++messages
+
+    if(message.says.match(/botfish5/g))
+        console.log(message.says)
+
     if(message.username === 'joefish5'){
         if(message.text === '!ping')
             message.reply(`PONG`)

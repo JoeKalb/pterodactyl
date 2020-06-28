@@ -17,6 +17,10 @@ export class User{
         this.client.ban(this.channel, this.username, reason)
     }
 
+    public isBroadcaster():boolean {
+        return this.channel.substring(1) === this.username
+    }
+
     public timeout(seconds:number, reason=""):void {
         this.client.timeout(this.channel, this.username, seconds, reason)
     }
