@@ -151,6 +151,9 @@ export class Client extends EventEmitter{
   public async join(channel: string):Promise<void> {
     let index = this.channels.indexOf(channel)
     channel = _.channel(channel)
+
+    if(this.userstates.hasOwnProperty(channel)) return
+
     this.channels.splice(index, 1, channel)
     await this.socket.send(`JOIN ${channel}`).catch(console.error)
   }
@@ -366,8 +369,6 @@ export class Client extends EventEmitter{
           this.emit('chat', newMessage)
         break
       case 'USERNOTICE':
-        if(rawMessage.match('unraid') || rawMessage.match('bitsbadgetier'))
-          console.log(rawMessage)
         this.usernoticeHandler(events.usernotice(rawMessage))
         break
       case 'USERSTATE':
@@ -400,7 +401,7 @@ export class Client extends EventEmitter{
     channel = _.channel(channel)
     if(!this.channels.includes(channel)){
       await this.join(channel)
-      await this.on('channelJoined', (channel:any) => { console.log(channel) })
+      this.on('channelJoined', (channel:any) => { console.log(channel) })
     }
 
     await this.socket.send(command).catch(console.error)
@@ -461,20 +462,6 @@ export class Client extends EventEmitter{
         console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
         console.log(usernotice)
     }
-    if(usernotice['msg-id'] !== "resub" 
-      && usernotice['msg-id'] !== "rewardgift"
-      && usernotice['msg-id'] !== "sub"
-      && usernotice['msg-id'] !== "subgift"
-      && usernotice['msg-id'] !== "submysterygift"
-      && usernotice['msg-id'] !== "primepaidupgrade"
-      && usernotice['msg-id'] !== "extendsub"
-      && usernotice['msg-id'] !== "communitypayforward"
-      && usernotice['msg-id'] !== "giftpaidupgrade"
-      && usernotice['msg-id'] !== "raid"
-      && usernotice['msg-id'] !== "ritual"
-      && usernotice['msg-id'] !== "standardpayforward"
-      && usernotice['msg-id'] !== "unraid")
-      console.log(usernotice)
     this.emit(usernotice['msg-id'], notice)
   }
 }

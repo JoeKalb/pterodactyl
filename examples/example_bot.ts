@@ -18,7 +18,7 @@ const opts = {
     channels:[
         'joefish5',
         'thabuttress',
-/*         'botfish5',
+        'botfish5',
         'ashm0nster',
         'lunalyrik',
         'hapabott',
@@ -50,7 +50,8 @@ const opts = {
         'curvyllama',
         'ms_jewel',
         'kruzadar',
-        'raelilblack' */
+        'raelilblack',
+        'alexiaraye'
     ]
 }
 const client = new Client(opts)

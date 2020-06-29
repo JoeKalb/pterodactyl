@@ -20,7 +20,30 @@ Deno.test("Event - 353", () => {
 })
 
 Deno.test("Event - bitBadgeTier", () => {
-    assertEquals(true, true)
+    assertEquals(
+        events.bitBadgeTier(client, {
+            ['badge-info']: "subscriber/15",
+            badges: "subscriber/12",
+            color: "#00FF7F",
+            ['display-name']: "funkybase",
+            emotes: "",
+            flags: "",
+            id: "9792281f-f32e-41d3-97ef-846a0410e4f3",
+            login: "funkybase",
+            mod: false,
+            ['msg-id']: "bitsbadgetier",
+            ['msg-param-threshold']: "1000",
+            ['room-id']: "36769016",
+            subscriber: true,
+            ['system-msg']: "bits badge tier notification",
+            ['tmi-sent-ts']: "1593452595945",
+            ['user-id']: "224595190",
+            ['user-type']: "",
+            username: "funkybase",
+            channel: "#timthetatman",
+            message: "yur"
+          }).msg_param_threshold, 
+        "1000")
 })
 
 Deno.test("Event - chatMessage", () => {
