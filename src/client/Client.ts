@@ -11,7 +11,6 @@ import commands from "./commands.ts";
 import events from "./events.ts";
 
 import { Userstate } from "../structures/Userstate.ts";
-import { Notice } from "../../mod.ts";
 
 export class Client extends EventEmitter{
   public socket!: WebSocket;
@@ -53,7 +52,7 @@ export class Client extends EventEmitter{
       const message = async ():Promise<void> => {
         for await (const msg of this.socket){
           if(typeof msg === "string"){
-            msg.trim().split('\n').forEach(e => { this.handleEvents(e) })
+            msg.trimEnd().split('\n').forEach(e => { this.handleEvents(e) })
           }else if(isWebSocketCloseEvent(msg)){
             console.log("Connection Closed.")
             console.log(msg)
