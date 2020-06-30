@@ -424,7 +424,7 @@ export class Client extends EventEmitter{
     channel = _.channel(channel)
     if(!this.channels.includes(channel)){
       await this.join(channel)
-      this.on('channelJoined', (channel:any) => { console.log(channel) })
+      this.once('channelJoined', (channel:any) => { console.log(channel) })
     }
 
     await this.socket.send(command).catch(console.error)
