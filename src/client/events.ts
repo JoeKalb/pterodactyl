@@ -192,13 +192,10 @@ const events = {
 
         usernotice['username'] = usernotice['login']
         usernotice['channel'] = tempArrayMessage[1]
-            .substring(tempArrayMessage[1].indexOf('#')).trim()
+            .substring(tempArrayMessage[1].indexOf('#')).trimEnd()
 
         if(tempArrayMessage.length === 3)
-            usernotice['message'] = tempArrayMessage[2].trim()
-
-        if(usernotice['msg-id'] === "bitsbadgetier")
-            console.log(rawMessage)
+            usernotice['message'] = tempArrayMessage[2].trimEnd()
 
         return usernotice
     }, 
