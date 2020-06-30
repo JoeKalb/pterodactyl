@@ -54,6 +54,11 @@ Deno.test("Event - chatMessage", () => {
     )
 })
 
+Deno.test("Event - chatMessage - isBroadcaster()", () => {
+    const result = events.chatMessage(client,"@badge-info=subscriber/1;badges=subscriber/0,bits/100;client-nonce=b20eb86b9eb147dac74853dd6e44c5d5;color=#8A2BE2;display-name=Taylien;emote-only=1;emotes=425618:0-2;flags=;id=9b3f6fee-d500-4030-ba6c-1f2ed2e3e9eb;mod=0;room-id=155586958;subscriber=1;tmi-sent-ts=1592165944057;turbo=0;user-id=41347151;user-type= :taylien!taylien@taylien.tmi.twitch.tv PRIVMSG #taylien :LUL")
+    assertEquals(result.isBroadcaster(), true)
+})
+
 Deno.test("Event - clearChat", () => {
     assertEquals(
         events.clearChat("@ban-duration=1;room-id=36769016;target-user-id=48234333;tmi-sent-ts=1593104710052 :tmi.twitch.tv CLEARCHAT #timthetatman :toghill97"), 

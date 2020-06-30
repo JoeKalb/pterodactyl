@@ -11,6 +11,7 @@ import commands from "./commands.ts";
 import events from "./events.ts";
 
 import { Userstate } from "../structures/Userstate.ts";
+import { Notice } from "../../mod.ts";
 
 export class Client extends EventEmitter{
   public socket!: WebSocket;
@@ -172,9 +173,19 @@ export class Client extends EventEmitter{
     this.sendCommand(channel, commands.mod(channel, username))
   }
 
-  /** Get the current list of moderators. The response will be found at client.on("notice", (info:Notice) => { info.message }) */
-  public mods(channel:string):void {
+  /** Get the list of moderators for a channel. */
+  public async mods(channel:string):Promise<string[]> {
     this.sendCommand(channel, commands.mods(channel))
+    return new Promise((resolve, reject) => {
+        this.once("no_mods", () => { resolve([]) })
+
+        this.once("room_mods", (notice:Notice) => {
+          resolve(notice.message.substring(36).split(', '))
+        })
+
+        setTimeout(() => reject("Error"), 2000)
+      }
+    )
   }
 
   /** Leave a channel. */
@@ -284,9 +295,17 @@ export class Client extends EventEmitter{
     this.sendCommand(channel, commands.unvip(channel, username))
   }
 
-  /** Get the current list of a vips in a channel. The response will be found at client.on("notice", (info:Notice) => { info.message }) */
-  public vips(channel:string):void {
+  /** Get the list of a vips in a channel. */
+  public vips(channel:string):Promise<string[]> {
     this.sendCommand(channel, commands.vips(channel))
+    return new Promise((resolve, reject) => {
+      this.once('no_vips', () => { resolve([]) })
+      this.once('vips_success', (notice:Notice) => { 
+        resolve(notice.message.substring(30, notice.message.indexOf('.')).split(', '))
+      })
+
+      setTimeout(() => reject("Error"), 2000)
+    })
   }
 
   /** Send a whisper to a specific user. */
@@ -344,7 +363,12 @@ export class Client extends EventEmitter{
         this.emit('hosting', events.hostTarget(this, rawMessage))
         break
       case 'NOTICE':
-        this.emit('notice', events.notice(rawMessage))
+        let notice = events.notice(rawMessage)
+        this.emit('notice', notice)
+        if(notice.msg_id === 'room_mods'||
+          notice.msg_id === 'no_mods' ||
+          notice.msg_id === 'no_vips' ||
+          notice.msg_id === 'vips_success') this.emit(notice.msg_id, notice)
         break
       case 'ROOMSTATE':
         this.emit('roomState', events.roomstate(rawMessage))

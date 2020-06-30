@@ -11,6 +11,7 @@ import { Notice } from "../structures/Notice.ts";
 import { Paidprimeupgrade } from "../structures/Paidprimeupgrade.ts";
 import { Raid } from "../structures/Raid.ts";
 import { Rewardgift } from "../structures/Rewardgift.ts";
+import { Ritual } from "../structures/Ritual.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
 import { Standardpayforward } from "../structures/Standardpayforward.ts";
 import { Sub } from "../structures/Sub.ts";
@@ -18,7 +19,7 @@ import { Subgift } from "../structures/Subgift.ts";
 import { Submysterygift } from "../structures/Submysterygift.ts";
 import { Unraid } from "../structures/Unraid.ts";
 import { User } from "../structures/User.ts";
-import { Whisper, Ritual } from "../../mod.ts";
+import { Whisper } from "../structures/Whisper.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {

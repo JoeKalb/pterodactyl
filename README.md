@@ -37,16 +37,15 @@ client.on('chatMessage', handleMessage)
 await client.connect()
 ```
 
+### Permissions
+
+* allow-net
+
 ## Authors
 
 Contributors names and contact info
 
 * [@joefishplays](https://twitter.com/joefishplays)
-
-## Version History
-
-* 0.1
-    * Initial Release
 
 ## License
 

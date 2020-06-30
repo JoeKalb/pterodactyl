@@ -56,7 +56,7 @@ const opts = {
 }
 const client = new Client(opts)
 
-let handleMessage = (message: Message) => {
+let handleMessage = async (message: Message) => {
 
     if(message.says.match(/botfish5/g))
         console.log(message.says)
@@ -64,13 +64,12 @@ let handleMessage = (message: Message) => {
     if(message.username === 'joefish5'){
         if(message.text === '!ping')
             message.reply(`PONG`)
-        else if(message.text === '!join' && message.channel === '#botfish5'){
+        else if(message.text === '!join' && message.channel === '#botfish5')
             client.join(message.username)
-        }
         else if(message.username === 'joefish5' && message.text === '!mods')
-            client.mods(message.channel)
+            console.log(await client.mods(message.channel))
         else if(message.username === 'joefish5' && message.text === '!vips')
-            client.vips(message.channel)
+            console.log(await client.vips(message.channel))
         else if (message.username === 'joefish5' && message.text === '!whisper')
             message.whisper('This is a test!')
         else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
