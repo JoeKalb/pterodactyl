@@ -67,9 +67,9 @@ let handleMessage = async (message: Message) => {
         else if(message.text === '!join' && message.channel === '#botfish5')
             client.join(message.username)
         else if(message.username === 'joefish5' && message.text === '!mods')
-            console.log(await client.mods(message.channel))
+            console.log(await client.mods(message.channel).catch(console.error))
         else if(message.username === 'joefish5' && message.text === '!vips')
-            console.log(await client.vips(message.channel))
+            console.log(await client.vips(message.channel).catch(console.error))
         else if (message.username === 'joefish5' && message.text === '!whisper')
             message.whisper('This is a test!')
         else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){

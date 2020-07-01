@@ -177,13 +177,22 @@ export class Client extends EventEmitter{
   public async mods(channel:string):Promise<string[]> {
     this.sendCommand(channel, commands.mods(channel))
     return new Promise((resolve, reject) => {
-        this.once("no_mods", () => { resolve([]) })
+        this.once("no_mods", () => { 
+          this.removeListener("room_mods", () => {})
+          resolve([]) 
+          
+        })
 
         this.once("room_mods", (notice:Notice) => {
+          this.removeListener("no_mods", () => {})
           resolve(notice.message.substring(36).split(', '))
         })
 
-        setTimeout(() => reject("Error"), 2000)
+        setTimeout(() => {
+          this.removeListener("no_mods", () => {})
+          this.removeListener("room_mods", () => {})
+          reject("Error")
+        }, 2000)
       }
     )
   }
@@ -299,12 +308,20 @@ export class Client extends EventEmitter{
   public vips(channel:string):Promise<string[]> {
     this.sendCommand(channel, commands.vips(channel))
     return new Promise((resolve, reject) => {
-      this.once('no_vips', () => { resolve([]) })
+      this.once('no_vips', () => { 
+        this.removeListener('vips_success', () => {})
+        resolve([]) 
+      })
       this.once('vips_success', (notice:Notice) => { 
+        this.removeListener('no_vips', () => {})
         resolve(notice.message.substring(30, notice.message.indexOf('.')).split(', '))
       })
 
-      setTimeout(() => reject("Error"), 2000)
+      setTimeout(() => {
+        this.removeListener('no_vips', () => {})
+        this.removeListener('vips_success', () => {})
+        reject("Error")
+      }, 2000)
     })
   }
 
