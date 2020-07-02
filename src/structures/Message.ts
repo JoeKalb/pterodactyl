@@ -17,7 +17,6 @@ export class Message extends User {
     public room_id?:string
     public says!:string
     public subscriber?:boolean
-    public text!:string
     public tmi_sent_ts?:string
     public turbo?:boolean
     public user_id?:string
@@ -45,7 +44,6 @@ export class Message extends User {
         this.mod = params['mod']
         this.says = params['text']
         this.subscriber = params['subscriber']
-        this.text = params['text']
         this.tmi_sent_ts = params['tmi-sent-ts']
         this.turbo = params['turbo']
         this.user_id = params['user-id']

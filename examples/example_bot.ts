@@ -2,6 +2,7 @@ import {
     Client,
     Message,
     Notice,
+    Roomstate,
     Sub,
     Subgift,
     Submysterygift,
@@ -9,7 +10,6 @@ import {
     Whisper
     } from "../mod.ts";
 import { config } from "https://deno.land/x/dotenv/mod.ts";
-import { Roomstate } from "../src/structures/Roomstate.ts";
 
 const opts = {
     client_id:config().TWITCH_CLIENT_ID,
@@ -62,18 +62,18 @@ let handleMessage = async (message: Message) => {
         console.log(message.says)
 
     if(message.username === 'joefish5'){
-        if(message.text === '!ping')
+        if(message.says === '!ping')
             message.reply(`PONG`)
-        else if(message.text === '!join' && message.channel === '#botfish5')
+        else if(message.says === '!join' && message.channel === '#botfish5')
             client.join(message.username)
-        else if(message.username === 'joefish5' && message.text === '!mods')
+        else if(message.username === 'joefish5' && message.says === '!mods')
             console.log(await client.mods(message.channel).catch(console.error))
-        else if(message.username === 'joefish5' && message.text === '!vips')
+        else if(message.username === 'joefish5' && message.says === '!vips')
             console.log(await client.vips(message.channel).catch(console.error))
-        else if (message.username === 'joefish5' && message.text === '!whisper')
+        else if (message.username === 'joefish5' && message.says === '!whisper')
             message.whisper('This is a test!')
-        else if(message.username === 'joefish5' && message.text.match(/!sendMessage/g)){
-            let parse = message.text.split(' ')
+        else if(message.username === 'joefish5' && message.says.match(/!sendMessage/g)){
+            let parse = message.says.split(' ')
             client.chat(parse[1], 'hi im new!')
         }
     }
