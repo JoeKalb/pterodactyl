@@ -20,20 +20,25 @@ export class Client extends EventEmitter{
   private twitch_client_id!:string
   private password!: string
   private username!: string
-  private interval: number = 0
-  private connected: boolean = false
   private userstates:{[index:string]:Userstate} = {}
+
+  private allSubs:boolean = false
+  private connected: boolean = false
+  private interval: number = 0
 
   public constructor(opts:{
     client_id:string,
     password:string,
     username:string,
-    channels:string[]}){
+    channels:string[],
+    options:{[index:string]:any}}){
     super();
     this.twitch_client_id = opts.client_id
     this.password = opts.password
     this.username = _.username(opts.username)
     this.channels = opts.channels
+    if(opts.options.hasOwnProperty('allSubs'))
+      this.allSubs = opts.options.allSubs
   }
   
   /** Connect to the Twitch IRC. */
@@ -483,6 +488,9 @@ export class Client extends EventEmitter{
       case 'primepaidupgrade':
         notice = events.paidPrimeUpgrade(this, usernotice)
         break
+      case 'standardpayforward':
+        notice = events.standardPayForward(this, usernotice)
+        break
       case 'raid':
         notice = events.raid(this, usernotice)
         break
@@ -495,13 +503,25 @@ export class Client extends EventEmitter{
       case 'bitsbadgetier':
         notice = events.bitBadgeTier(this, usernotice)
         break
-      case 'standardpayforward':
-        notice = events.standardPayForward(this, usernotice)
-        break
       default:
         console.log(`Case not found for usernotice: ${usernotice['msg-id']}`)
         console.log(usernotice)
     }
     this.emit(usernotice['msg-id'], notice)
+    if(this.allSubs && this.isSubType(usernotice['msg-id']))
+      this.emit('subs', notice)
+  }
+
+  private isSubType(noticeID:string):boolean{
+    return noticeID === "sub"
+      || noticeID === "resub"
+      || noticeID === "subgift"
+      || noticeID === "anonsubgift"
+      || noticeID === "submysterygift"
+      || noticeID === "giftpaidupgrade"
+      || noticeID === "anongiftpaidupgrade"
+      || noticeID === "extendsub"
+      || noticeID === "primepaidupgrade"
+      || noticeID === "standardpayforward"
   }
 }

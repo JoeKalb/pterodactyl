@@ -52,7 +52,8 @@ const opts = {
         'kruzadar',
         'raelilblack',
         'alexiaraye'
-    ]
+    ],
+    options:{}
 }
 const client = new Client(opts)
 
