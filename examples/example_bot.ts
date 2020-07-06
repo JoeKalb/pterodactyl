@@ -51,7 +51,8 @@ const opts = {
         'ms_jewel',
         'kruzadar',
         'raelilblack',
-        'alexiaraye'
+        'alexiaraye',
+        'landonorris'
     ],
     options:{}
 }

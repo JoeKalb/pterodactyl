@@ -147,6 +147,21 @@ export class Client extends EventEmitter{
     this.sendCommand(channel, commands.followersOff(channel))
   }
 
+  /** Send an array of usernames and get back json data to get userID values. Requires Twitch Client-ID */
+  public async getUserIDS(usernames:string[]):Promise<{[index:string]:any}> {
+    let res = await fetch(`https://api.twitch.tv/kraken/users?login=${usernames.join(',')}`,{
+      headers:{
+        'Accept':'application/vnd.twitchtv.v5+json',
+        'Client-ID':this.twitch_client_id
+      }
+    })
+    const json = await res.json()
+
+    console.log('getUserIDS')
+    console.log(json)
+    return json
+  }
+
   /** Select a channel to host. Requires editor permission. */
   public host(channel:string, targetChannel:string):void {
     this.sendCommand(channel, commands.host(channel, targetChannel))
