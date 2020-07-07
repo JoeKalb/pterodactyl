@@ -78,6 +78,10 @@ let handleMessage = async (message: Message) => {
             let parse = message.says.split(' ')
             client.chat(parse[1], 'hi im new!')
         }
+        else if(message.isMod() && message.channel === '#thabuttress' && message.says === 'BOT')
+            message.say('BEEP BOOP')
+        else if(message.isMod() && message.channel === '#thabuttress' && message.says === '!marker')
+            client.marker(message.channel)
     }
 }
 
