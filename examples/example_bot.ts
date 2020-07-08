@@ -52,7 +52,8 @@ const opts = {
         'kruzadar',
         'raelilblack',
         'alexiaraye',
-        'landonorris'
+        'landonorris',
+        'livilu4'
     ],
     options:{}
 }
@@ -68,13 +69,13 @@ let handleMessage = async (message: Message) => {
             message.reply(`PONG`)
         else if(message.says === '!join' && message.channel === '#botfish5')
             client.join(message.username)
-        else if(message.username === 'joefish5' && message.says === '!mods')
+        else if(message.says === '!mods')
             console.log(await client.mods(message.channel).catch(console.error))
-        else if(message.username === 'joefish5' && message.says === '!vips')
+        else if(message.says === '!vips')
             console.log(await client.vips(message.channel).catch(console.error))
-        else if (message.username === 'joefish5' && message.says === '!whisper')
+        else if (message.says === '!whisper')
             message.whisper('This is a test!')
-        else if(message.username === 'joefish5' && message.says.match(/!sendMessage/g)){
+        else if(message.says.match(/!sendMessage/g)){
             let parse = message.says.split(' ')
             client.chat(parse[1], 'hi im new!')
         }
