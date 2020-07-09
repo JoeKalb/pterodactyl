@@ -103,4 +103,7 @@ client.on('notice', handleNotice)
 client.on('roomState', handleRoomState)
 client.on('whisper', handleWhisper)
 
+client.on('ban', (ban:{}) => console.log(ban))
+client.on('timeout', (timeout:{}) => console.log(timeout))
+
 await client.connect()

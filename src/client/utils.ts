@@ -95,7 +95,9 @@ const _ =  {
     }, 
 
     username:(username:string):string => {
-        return username.trim().toLowerCase()
+        return (username !== undefined)
+            ? username.trim().toLowerCase()
+            : ''
     }
 }
 
