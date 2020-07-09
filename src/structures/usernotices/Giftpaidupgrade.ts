@@ -1,7 +1,7 @@
 // For anongiftpaidupgrade and giftpaidupgrade usernotices
 
 import { Base } from "./BaseUsernotice.ts";
-import { Client } from "../client/Client.ts";
+import { Client } from "../../client/Client.ts";
 
 export class Giftpaidupgrade extends Base{
     public msg_param_promo_gift_total!:number

@@ -1,25 +1,28 @@
 import _ from "./utils.ts";
 import { Client } from "./Client.ts";
 
-import { Bitbadgetier } from "../structures/Bitbadgettier.ts";
-import { Communitypayforward } from "../structures/Communitypayforward.ts";
-import { Extendsub } from "../structures/Extendsub.ts";
-import { Giftpaidupgrade } from "../structures/Giftpaidupgrade.ts";
 import { Host } from "../structures/Host.ts";
 import { Message } from "../structures/Message.ts";
 import { Notice } from "../structures/Notice.ts";
-import { Paidprimeupgrade } from "../structures/Paidprimeupgrade.ts";
-import { Raid } from "../structures/Raid.ts";
-import { Rewardgift } from "../structures/Rewardgift.ts";
-import { Ritual } from "../structures/Ritual.ts";
 import { Roomstate } from "../structures/Roomstate.ts";
-import { Standardpayforward } from "../structures/Standardpayforward.ts";
-import { Sub } from "../structures/Sub.ts";
-import { Subgift } from "../structures/Subgift.ts";
-import { Submysterygift } from "../structures/Submysterygift.ts";
-import { Unraid } from "../structures/Unraid.ts";
 import { User } from "../structures/User.ts";
 import { Whisper } from "../structures/Whisper.ts";
+
+import {
+    Bitbadgetier,
+    Communitypayforward,
+    Extendsub,
+    Giftpaidupgrade,
+    Paidprimeupgrade,
+    Raid,
+    Rewardgift,
+    Ritual,
+    Standardpayforward,
+    Sub,
+    Subgift,
+    Submysterygift,
+    Unraid
+    } from "../structures/usernotices/mod.ts";
 
 const events = {
     '353':(rawMessage:string):{} => {

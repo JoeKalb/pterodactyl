@@ -1,7 +1,7 @@
 // For subgift and anonsubgift events
 
 import { Base } from "./BaseUsernotice.ts";
-import { Client } from "../client/Client.ts";
+import { Client } from "../../client/Client.ts";
 
 export class Subgift extends Base{
     public msg_param_months!:number

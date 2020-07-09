@@ -1,20 +1,25 @@
 export { Client } from "./src/client/Client.ts";
 
-export { Bitbadgetier } from "./src/structures/Bitbadgettier.ts";
-export { Communitypayforward } from "./src/structures/Communitypayforward.ts";
-export { Extendsub } from "./src/structures/Extendsub.ts";
-export { Giftpaidupgrade } from "./src/structures/Giftpaidupgrade.ts";
+export { Emote } from "./src/structures/Emote.ts";
 export { Host } from "./src/structures/Host.ts";
 export { Message } from "./src/structures/Message.ts";
 export { Notice } from "./src/structures/Notice.ts";
-export { Paidprimeupgrade } from "./src/structures/Paidprimeupgrade.ts";
-export { Raid } from "./src/structures/Raid.ts";
-export { Ritual } from "./src/structures/Ritual.ts";
 export { Roomstate } from "./src/structures/Roomstate.ts";
-export { Standardpayforward } from "./src/structures/Standardpayforward.ts";
-export { Sub } from "./src/structures/Sub.ts";
-export { Subgift } from "./src/structures/Subgift.ts";
-export { Submysterygift } from "./src/structures/Submysterygift.ts";
-export { Unraid } from "./src/structures/Unraid.ts";
 export { User } from "./src/structures/User.ts";
 export { Whisper } from "./src/structures/Whisper.ts";
+
+export {
+    Bitbadgetier,
+    Communitypayforward,
+    Extendsub,
+    Giftpaidupgrade,
+    Paidprimeupgrade,
+    Raid,
+    Rewardgift,
+    Ritual,
+    Standardpayforward,
+    Sub,
+    Subgift,
+    Submysterygift,
+    Unraid
+    } from "./src/structures/usernotices/mod.ts";

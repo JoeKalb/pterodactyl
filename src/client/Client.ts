@@ -11,7 +11,7 @@ import commands from "./commands.ts";
 import events from "./events.ts";
 
 import { Userstate } from "../structures/Userstate.ts";
-import { Notice } from "../../mod.ts";
+import { Notice } from "../structures/Notice.ts";
 
 export class Client extends EventEmitter{
   public socket!: WebSocket;

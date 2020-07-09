@@ -1,5 +1,5 @@
 import { Base } from "./BaseUsernotice.ts";
-import { Client } from "../client/Client.ts";
+import { Client } from "../../client/Client.ts";
 
 export class Submysterygift extends Base{
     public msg_param_mass_gift_count!:number

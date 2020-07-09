@@ -1,7 +1,7 @@
 // For sub and resub events
 
 import { Base } from "./BaseUsernotice.ts";
-import { Client } from "../client/Client.ts";
+import { Client } from "../../client/Client.ts";
 
 export class Sub extends Base{
     public msg_param_cumulative_months!:number

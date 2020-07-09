@@ -1,5 +1,5 @@
 import { Base } from "./BaseUsernotice.ts";
-import { Client } from "../client/Client.ts";
+import { Client } from "../../client/Client.ts";
 
 export class Extendsub extends Base{
     public msg_param_cumulative_months!:number

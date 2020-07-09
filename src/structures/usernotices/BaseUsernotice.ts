@@ -1,7 +1,7 @@
-import { Client } from "../client/Client.ts";
-import { Emote } from "./Emote.ts";
-import { User } from "./User.ts";
-import _ from "../client/utils.ts";
+import { Client } from "../../client/Client.ts";
+import { Emote } from "../Emote.ts";
+import { User } from "../User.ts";
+import _ from "../../client/utils.ts";
 
 export class Base extends User{
     public badge_info!:string

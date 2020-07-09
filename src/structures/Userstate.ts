@@ -1,5 +1,3 @@
-import { Emote } from "./Emote.ts";
-
 export class Userstate{
     public badge_info!:string
     public badges!:string[]
