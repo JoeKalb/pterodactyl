@@ -11,10 +11,12 @@ export class Host{
         this.host_channel = params['host']
     }
 
+    /** Join the channel being hosted. */
     public join():void {
         this.client.join(this.host_channel)
     }
 
+    /** Stop hosting on this channel. Requires editor permissions. */
     public unhost():void {
         this.client.unhost(this.channel)
     }

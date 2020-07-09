@@ -51,14 +51,17 @@ export class Base extends User{
         this.user_type = params['user-type']
     }
 
+    /** Send a message in the same channel as the usernotice with `@${this.display_name}` at the beginning of the message. */
     public reply(message:string):void {
         this.client.chat(this.channel, `@${this.display_name} ${message}`)
     }
 
+    /** Send a message in the same channel as the usernotice. */
     public say(message:string):void {
         this.client.chat(this.channel, message)
     }
 
+    /** Send a whisper to the user who triggered the usernotice. */
     public whisper(message:string):void {
         this.client.whisper(this.username, message)
     }

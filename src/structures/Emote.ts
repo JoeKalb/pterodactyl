@@ -15,6 +15,7 @@ export class Emote{
         
     }
 
+    /** Get the emote URL. */
     public getEmoteURL(size="1.0"):string{
         return `http://static-cdn.jtvnw.net/emoticons/v1/${this.emote_id}/${size}`
     }

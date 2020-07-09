@@ -35,10 +35,12 @@ export class Whisper{
         this.username = params['username']
     }
 
+    /** Check to see if the whisper has emotes. */
     public hasEmotes():boolean {
         return this.emotes.length > 0
     }
 
+    /** Send a whisper back to the user that sent it. */
     public say(message:string):void {
         this.client.whisper(this.username, message)
     }
