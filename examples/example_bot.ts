@@ -12,7 +12,6 @@ import {
 import { config } from "https://deno.land/x/dotenv/mod.ts";
 
 const opts = {
-    client_id:config().TWITCH_CLIENT_ID,
     password:config().TWITCH_PASSWORD,
     username:config().TWITCH_USERNAME,
     channels:[

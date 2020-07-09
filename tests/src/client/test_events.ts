@@ -5,7 +5,6 @@ import events from "../../../src/client/events.ts";
 import { Userstate } from "../../../src/structures/Userstate.ts";
 
 const opts = {
-    client_id:'',
     password:'',
     username:'',
     channels:[],
@@ -509,7 +508,7 @@ Deno.test("Event - usernotice", () => {
 
 Deno.test("Event - userstate", () => {
     assertEquals(
-        new Userstate('', events.userstate("@badge-info=subscriber/8;badges=moderator/1,subscriber/3006;color=#FF69B4;display-name=BotFish5;emote-sets=0,24223,49906,49907,96952,1261174,300548760,488737509,537206155;mod=1;subscriber=1;user-type=mod :tmi.twitch.tv USERSTATE #thabuttress")).subscriber, 
+        new Userstate(events.userstate("@badge-info=subscriber/8;badges=moderator/1,subscriber/3006;color=#FF69B4;display-name=BotFish5;emote-sets=0,24223,49906,49907,96952,1261174,300548760,488737509,537206155;mod=1;subscriber=1;user-type=mod :tmi.twitch.tv USERSTATE #thabuttress")).subscriber, 
         true)
 })
 

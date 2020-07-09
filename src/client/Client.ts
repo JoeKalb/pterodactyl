@@ -17,7 +17,6 @@ export class Client extends EventEmitter{
   public socket!: WebSocket;
   public channels: string[] = []
 
-  private twitch_client_id!:string
   private password!: string
   private username!: string
   private userstates:{[index:string]:Userstate} = {}
@@ -27,13 +26,11 @@ export class Client extends EventEmitter{
   private interval: number = 0
 
   public constructor(opts:{
-    client_id:string,
     password:string,
     username:string,
     channels:string[],
     options:{[index:string]:any}}){
     super();
-    this.twitch_client_id = opts.client_id
     this.password = opts.password
     this.username = _.username(opts.username)
     this.channels = opts.channels
@@ -145,21 +142,6 @@ export class Client extends EventEmitter{
   /** Disable followers only mode. Requires moderator permission. */
   public followersOff(channel:string):void {
     this.sendCommand(channel, commands.followersOff(channel))
-  }
-
-  /** Send an array of usernames and get back json data to get userID values. Requires Twitch Client-ID */
-  public async getUserIDS(usernames:string[]):Promise<{[index:string]:any}> {
-    let res = await fetch(`https://api.twitch.tv/kraken/users?login=${usernames.join(',')}`,{
-      headers:{
-        'Accept':'application/vnd.twitchtv.v5+json',
-        'Client-ID':this.twitch_client_id
-      }
-    })
-    const json = await res.json()
-
-    console.log('getUserIDS')
-    console.log(json)
-    return json
   }
 
   /** Select a channel to host. Requires editor permission. */
@@ -432,7 +414,7 @@ export class Client extends EventEmitter{
         this.usernoticeHandler(events.usernotice(rawMessage))
         break
       case 'USERSTATE':
-        let newUserstate = new Userstate(this.twitch_client_id, events.userstate(rawMessage))
+        let newUserstate = new Userstate(events.userstate(rawMessage))
         this.userstates[newUserstate.channel] = newUserstate
         break
       case 'WHISPER':
