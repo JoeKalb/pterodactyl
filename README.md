@@ -16,7 +16,7 @@ Deno client for Twitch IRC chat.
 import { 
     Client,
     Message
-    } from "../mod.ts";
+    } from "https://deno.land/x/pterodactyl/mod.ts";
 
 const opts = {
     password:'<Twitch OAuth>',
