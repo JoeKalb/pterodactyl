@@ -32,7 +32,7 @@ let handleMessage = (message:Message) => {
         message.reply('pong')
 }
 
-client.on('chatMessage', handleMessage)
+client.on('chat', handleMessage)
 
 await client.connect()
 ```
