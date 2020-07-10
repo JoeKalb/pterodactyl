@@ -28,14 +28,11 @@ export class Client extends EventEmitter{
   public constructor(opts:{
     password:string,
     username:string,
-    channels:string[],
-    options:{[index:string]:any}}){
+    channels:string[]}){
     super();
     this.password = opts.password
     this.username = _.username(opts.username)
     this.channels = opts.channels
-    if(opts.options.hasOwnProperty('allSubs'))
-      this.allSubs = opts.options.allSubs
   }
   
   /** Connect to the Twitch IRC. */

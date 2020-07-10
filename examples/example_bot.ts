@@ -53,8 +53,7 @@ const opts = {
         'alexiaraye',
         'landonorris',
         'livilu4'
-    ],
-    options:{}
+    ]
 }
 const client = new Client(opts)
 
